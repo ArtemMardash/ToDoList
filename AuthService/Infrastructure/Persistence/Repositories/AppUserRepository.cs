@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Infrastructure.Persistence.Repositories;
 
-public class AppUserRepository: IAppUserRepository
+public class AppUserRepository : IAppUserRepository
 {
     private readonly UserManager<AppUserDb> _userManager;
 
@@ -14,18 +14,23 @@ public class AppUserRepository: IAppUserRepository
     {
         _userManager = userManager;
     }
-    
+
     public async Task<Guid> CreateUserAsync(AppUser user, CancellationToken cancellationToken)
     {
         var userDb = AppUserToAppUserDb(user);
-        await _userManager.CreateAsync(userDb, user.Password);
-        return Guid.Parse(userDb.Id);
+        var result = await _userManager.CreateAsync(userDb, user.Password);
+        if (result.Succeeded)
+        {
+            return Guid.Parse(userDb.Id);
+        }
+
+        throw new InvalidOperationException(string.Join("\n", result.Errors.Select(e => e.Description)));
     }
 
     public async Task<AppUser?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var appUserDb = await  _userManager.FindByIdAsync(id.ToString());
-        
+        var appUserDb = await _userManager.FindByIdAsync(id.ToString());
+
         if (appUserDb == null)
         {
             throw new ArgumentNullException(nameof(appUserDb), "There is no appUser with such ID");
@@ -37,7 +42,7 @@ public class AppUserRepository: IAppUserRepository
     public async Task<AppUser> GetUserByEmail(string email, CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByEmailAsync(email);
-        
+
         if (appUserDb == null)
         {
             throw new ArgumentNullException(nameof(appUserDb), "There is no appUser with such email");
@@ -46,9 +51,15 @@ public class AppUserRepository: IAppUserRepository
         return AppUserDbToAppUser(appUserDb);
     }
 
-    public Task<bool> ValidatePasswordAsync(AppUser appUser, string password, CancellationToken cancellationToken)
+    public async Task<bool> ValidatePasswordAsync(Guid id, string password, CancellationToken cancellationToken)
     {
-        return Task.FromResult(appUser.Password == password);
+        var appUserDb = await _userManager.FindByIdAsync(id.ToString());
+        if (appUserDb == null)
+        {
+            throw new InvalidOperationException("There is no user with such Id");
+        }
+
+        return await _userManager.CheckPasswordAsync(appUserDb, password);
     }
 
     private AppUserDb AppUserToAppUserDb(AppUser user)
@@ -57,7 +68,8 @@ public class AppUserRepository: IAppUserRepository
         {
             Id = user.Id.ToString(),
             Email = user.Email,
-            FullName = user.FullName.FirstName + " " + user.FullName.LastName,
+            UserName = user.Email,
+            FullName = user.FullName.FirstName + " " + user.FullName.LastName
         };
     }
 

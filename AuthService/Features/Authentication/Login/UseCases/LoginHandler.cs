@@ -11,13 +11,13 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
 {
     private readonly IAppUserRepository _appUserRepository;
     private readonly IValidator<LoginRequest> _validator;
-    private readonly JwtUtils _jwtUtils;
+    private readonly JwtService _jwtService;
 
-    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, JwtUtils jwtUtils)
+    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, JwtService jwtService)
     {
         _appUserRepository = appUserRepository;
         _validator = validator;
-        _jwtUtils = jwtUtils;
+        _jwtService = jwtService;
     }
     
     public async ValueTask<LoginRequestResult> Handle(LoginRequest request, CancellationToken cancellationToken)
@@ -26,15 +26,15 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
 
         var user = await _appUserRepository.GetUserByEmail(request.Email, cancellationToken);
 
-        if (!await _appUserRepository.ValidatePasswordAsync(user, request.Password, cancellationToken))
+        if (!await _appUserRepository.ValidatePasswordAsync(user.Id, request.Password, cancellationToken))
         {
             throw new InvalidOperationException("Wrong Password");
         }
 
-        var token = _jwtUtils.GenerateToken(user.Email);
+        var token = _jwtService.GenerateToken(user);
         return new LoginRequestResult
         {
-            Jwt = token
+            Token = token
         };
 
     }

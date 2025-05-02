@@ -1,8 +1,10 @@
 using System.Text;
 using AuthService.Features.Authentication.Shared.Repositories;
+using AuthService.Infrastructure.Jwt;
 using AuthService.Infrastructure.Persistence;
 using AuthService.Infrastructure.Persistence.Entities;
 using AuthService.Infrastructure.Persistence.Repositories;
+using FluentValidation;
 using Mediator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -35,12 +37,15 @@ public static class DependencyInjection
         {
             options.ServiceLifetime = ServiceLifetime.Transient;
         });
+        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
         var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        services.AddScoped<JwtService>();
+        services.Configure<JwtSettings>(jwtSettings);
 
         services.AddAuthentication(opt =>
             {

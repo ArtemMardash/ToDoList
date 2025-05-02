@@ -23,5 +23,5 @@ public interface IAppUserRepository
     /// <summary>
     /// Method to validate password
     /// </summary>
-    public Task<bool> ValidatePasswordAsync(AppUser appUser, string password, CancellationToken cancellationToken);
+    public Task<bool> ValidatePasswordAsync(Guid id, string password, CancellationToken cancellationToken);
 }

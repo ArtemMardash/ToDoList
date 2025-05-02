@@ -19,7 +19,7 @@ public class UserContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
     public AuthDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<AuthDbContext>();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Users;Username=postgres;Password=postgres",
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AuthDb;Username=postgres;Password=postgres",
             builder => builder.MigrationsAssembly(typeof(AuthDbContext).Assembly.GetName().Name));
 
         return new AuthDbContext(optionsBuilder.Options);

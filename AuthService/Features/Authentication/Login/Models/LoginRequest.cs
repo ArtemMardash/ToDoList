@@ -12,12 +12,12 @@ public class LoginRequest: IRequest<LoginRequestResult>
 
 public class LoginRequestResult
 {
-    public string Jwt { get; set; }
+    public string Token { get; set; }
 }
 
-public class RegisterValidator: AbstractValidator<LoginRequest>
+public class LoginValidator: AbstractValidator<LoginRequest>
 {
-    public RegisterValidator()
+    public LoginValidator()
     {
         RuleFor(r => r.Email).NotEmpty().EmailAddress();
         RuleFor(r => r.Password).MinimumLength(8);
