@@ -45,7 +45,7 @@ public class AppUserRepository : IAppUserRepository
 
         if (appUserDb == null)
         {
-            throw new ArgumentNullException(nameof(appUserDb), "There is no appUser with such email");
+            throw new InvalidOperationException( "There is no appUser with such email");
         }
 
         return AppUserDbToAppUser(appUserDb);

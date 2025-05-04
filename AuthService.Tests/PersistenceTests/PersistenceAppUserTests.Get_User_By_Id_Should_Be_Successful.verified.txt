@@ -1,0 +1,8 @@
+﻿{
+  Id: Guid_1,
+  Email: email@gmail.com,
+  FullName: {
+    FirstName: Maxim,
+    LastName: Kyznechick
+  }
+}

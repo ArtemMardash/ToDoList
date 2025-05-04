@@ -18,44 +18,17 @@ namespace AuthService.Tests.PersistenceTests;
 
 public class PersistenceAppUserTests: IDisposable
 {
-    private IAppUserRepository _appUserRepository;
-    private AuthDbContext _dbContext;
-    private Guid _existedAppUserId;
+    private static IAppUserRepository _appUserRepository;
+    private static AuthDbContext _dbContext;
+    private static Guid _existedAppUserId;
+    private readonly DbForTests _dbService = new DbForTests();
 
     public PersistenceAppUserTests()
     {
-        var builder = WebApplication.CreateBuilder();
-        var services = builder.Services;
-        var loggerMock = Substitute.For<ILogger<UserManager<AppUserDb>>>();
-
-
-        services.AddDbContext<AuthDbContext>(opt =>
-        {
-            opt.UseNpgsql(
-                connectionString:
-                $"Host=localHost;Port=5432;Database=TestAuthDb_{Guid.NewGuid()};Username=postgres;Password=postgres",
-                builder => builder.MigrationsAssembly(typeof(AuthDbContext).Assembly.GetName().Name));
-        });
-        services.AddScoped<IAppUserRepository, AppUserRepository>();
-        services.AddIdentity<AppUserDb, IdentityRole>()
-            .AddEntityFrameworkStores<AuthDbContext>()
-            .AddDefaultTokenProviders();
-        services.AddScoped<ILogger<UserManager<AppUserDb>>>(sp => loggerMock);
-
-        var scope = builder.Build().Services.CreateScope();
-
-        var serviceProvider = scope.ServiceProvider;
-
-        _appUserRepository = serviceProvider.GetRequiredService<IAppUserRepository>();
-        _dbContext = serviceProvider.GetRequiredService<AuthDbContext>();
-        _dbContext.Database.Migrate();
-
-         _existedAppUserId = _appUserRepository.CreateUserAsync(
-            new AppUser("email@gmail.com", "Ar12345!", new FullName("Maxim", "Kyznechick")), CancellationToken.None)
-             .GetAwaiter()
-             .GetResult();
-         
-        _dbContext.SaveChanges();
+        _appUserRepository = _dbService.GetRequiredService<IAppUserRepository>();
+        _dbContext = _dbService.GetRequiredService<AuthDbContext>();
+        _dbService.Migrate(_dbContext);
+        _existedAppUserId = _dbService.GetUserId(_appUserRepository, _dbContext);
     }
 
     public void Dispose()
@@ -81,6 +54,16 @@ public class PersistenceAppUserTests: IDisposable
     public async Task Get_User_By_Id_Should_Be_Successful()
     {
         var appUser = await _appUserRepository.GetUserByIdAsync(_existedAppUserId, CancellationToken.None);
+
+        var settings = new VerifySettings();
+        settings.IgnoreMember(nameof(appUser.Password));
+        await Verify(appUser, settings);
+    }
+    
+    [Fact]
+    public async Task Get_User_By_Email_Should_Be_Successful()
+    {
+        var appUser = await _appUserRepository.GetUserByEmail("email@gmail.com", CancellationToken.None);
 
         var settings = new VerifySettings();
         settings.IgnoreMember(nameof(appUser.Password));

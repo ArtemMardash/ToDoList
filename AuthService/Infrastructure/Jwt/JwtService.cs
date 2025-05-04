@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AuthService.Core.Entities;
+using AuthService.Features.Authentication.Login.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Infrastructure.Jwt;
 
-public class JwtService
+public class JwtService: IJwtService
 {
     private readonly JwtSettings _jwtSettings;
 
@@ -33,5 +34,10 @@ public class JwtService
             signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)), SecurityAlgorithms.HmacSha256)
         );
         return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
+
+    public string GenerateRefreshToken(string jwtToken)
+    {
+        throw new NotImplementedException();
     }
 }

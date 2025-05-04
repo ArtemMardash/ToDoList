@@ -1,4 +1,5 @@
 using System.Text;
+using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.Shared.Repositories;
 using AuthService.Infrastructure.Jwt;
 using AuthService.Infrastructure.Persistence;
@@ -44,7 +45,7 @@ public static class DependencyInjection
     {
         var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
         var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
-        services.AddScoped<JwtService>();
+        services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtSettings>(jwtSettings);
 
         services.AddAuthentication(opt =>
