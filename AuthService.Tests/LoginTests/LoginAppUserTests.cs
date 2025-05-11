@@ -40,7 +40,7 @@ public class LoginAppUserTests
 
         var result =await _mediator.Send(loginRequest, CancellationToken.None);
 
-        result.Token.Should().NotBeNull();
+        result.AccessToken.Should().NotBeNull();
     }
     
     [Theory]

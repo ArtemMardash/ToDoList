@@ -34,10 +34,7 @@
 
     <ItemGroup>
       <Folder Include="Core\Interfaces\" />
-      <Folder Include="Features\Authentication\RefreshToken\Controllers\" />
-      <Folder Include="Features\Authentication\RefreshToken\Models\" />
       <Folder Include="Features\Authentication\RefreshToken\Services\" />
-      <Folder Include="Features\Authentication\RefreshToken\UserCases\" />
       <Folder Include="Features\Authentication\Register\Services\" />
       <Folder Include="Features\Authentication\Shared\Interfaces\" />
       <Folder Include="Infrastructure\Cqrs\" />

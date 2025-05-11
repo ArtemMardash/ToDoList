@@ -18,26 +18,73 @@ public class JwtService: IJwtService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateToken(AppUser appUser)
+    private string BuildToken(AppUser appUser, string secretKey, DateTime experation, IEnumerable<Claim> additionalClaims)
     {
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
             new Claim(JwtRegisteredClaimNames.Sub, appUser.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString() )
         };
+        if (additionalClaims != null && additionalClaims.Any())
+        {
+            claims.AddRange(additionalClaims);
+        }
+        
         var jwt = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)), SecurityAlgorithms.HmacSha256)
+            expires: experation,
+            signingCredentials: new SigningCredentials(
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(secretKey)), 
+                SecurityAlgorithms.HmacSha256)
         );
         return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 
-    public string GenerateRefreshToken(string jwtToken)
+    public string GenerateAccessToken(AppUser appUser)
     {
-        throw new NotImplementedException();
+        return BuildToken(
+            appUser,
+            _jwtSettings.AccessToken.Key,
+            DateTime.UtcNow.AddMinutes(_jwtSettings.AccessToken.ExpiryInMinutes),
+            additionalClaims: new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("token_type", "access")
+            }
+        );
+    }
+
+    public string GenerateRefreshToken(AppUser appUser)
+    {
+        return BuildToken(
+            appUser,
+            _jwtSettings.RefreshToken.Key,
+            DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshToken.ExpiryInMinutes),
+            additionalClaims: new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("token_type", "refresh")
+            }
+        );
+    }
+
+    public ClaimsPrincipal ValidateToken(string token, bool isRefresh)
+    {
+        var key = Encoding.UTF8.GetBytes( isRefresh ? _jwtSettings.RefreshToken.Key : _jwtSettings.AccessToken.Key);
+        var validationParams = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = _jwtSettings.Issuer,
+            ValidAudience = _jwtSettings.Audience
+        };
+
+        var handler = new JwtSecurityTokenHandler();
+        return handler.ValidateToken(token, validationParams, out _);
     }
 }

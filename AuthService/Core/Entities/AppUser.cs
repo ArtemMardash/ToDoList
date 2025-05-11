@@ -12,6 +12,7 @@ public class AppUser
     public string Password { get; private set; }
     
     public FullName FullName { get; private set; }
+    
 
     public AppUser(Guid id, string email, string password, FullName fullName)
     {

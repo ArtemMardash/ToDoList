@@ -63,7 +63,7 @@ public class PersistenceAppUserTests: IDisposable
     [Fact]
     public async Task Get_User_By_Email_Should_Be_Successful()
     {
-        var appUser = await _appUserRepository.GetUserByEmail("email@gmail.com", CancellationToken.None);
+        var appUser = await _appUserRepository.GetUserByEmailAsyn("email@gmail.com", CancellationToken.None);
 
         var settings = new VerifySettings();
         settings.IgnoreMember(nameof(appUser.Password));

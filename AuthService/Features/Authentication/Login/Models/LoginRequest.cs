@@ -12,7 +12,9 @@ public class LoginRequest: IRequest<LoginRequestResult>
 
 public class LoginRequestResult
 {
-    public string Token { get; set; }
+    public string AccessToken { get; set; }
+    
+    public string RefreshToken { get; set; }
 }
 
 public class LoginValidator: AbstractValidator<LoginRequest>

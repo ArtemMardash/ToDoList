@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AuthService.Features.Authentication.Login.Models;
+using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.Shared.Repositories;
 using AuthService.Infrastructure.Jwt;
 using FluentValidation;
@@ -11,9 +12,9 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
 {
     private readonly IAppUserRepository _appUserRepository;
     private readonly IValidator<LoginRequest> _validator;
-    private readonly JwtService _jwtService;
+    private readonly IJwtService _jwtService;
 
-    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, JwtService jwtService)
+    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, IJwtService jwtService)
     {
         _appUserRepository = appUserRepository;
         _validator = validator;
@@ -24,17 +25,20 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var user = await _appUserRepository.GetUserByEmail(request.Email, cancellationToken);
+        var user = await _appUserRepository.GetUserByEmailAsyn(request.Email, cancellationToken);
 
         if (!await _appUserRepository.ValidatePasswordAsync(user.Id, request.Password, cancellationToken))
         {
             throw new InvalidOperationException("Wrong Password");
         }
 
-        var token = _jwtService.GenerateToken(user);
+        var accessToken = _jwtService.GenerateAccessToken(user);
+        var refreshToken = _jwtService.GenerateRefreshToken(user);
+        
         return new LoginRequestResult
         {
-            Token = token
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
         };
 
     }

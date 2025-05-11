@@ -44,7 +44,7 @@ public static class DependencyInjection
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        var key = Encoding.ASCII.GetBytes(jwtSettings["AccessToken:Key"]!);
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtSettings>(jwtSettings);
 

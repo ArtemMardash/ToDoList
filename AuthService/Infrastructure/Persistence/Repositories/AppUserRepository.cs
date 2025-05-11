@@ -15,6 +15,9 @@ public class AppUserRepository : IAppUserRepository
         _userManager = userManager;
     }
 
+    /// <summary>
+    /// Method that creates appUser
+    /// </summary>
     public async Task<Guid> CreateUserAsync(AppUser user, CancellationToken cancellationToken)
     {
         var userDb = AppUserToAppUserDb(user);
@@ -27,6 +30,9 @@ public class AppUserRepository : IAppUserRepository
         throw new InvalidOperationException(string.Join("\n", result.Errors.Select(e => e.Description)));
     }
 
+    /// <summary>
+    /// Method to get appUser by id
+    /// </summary>
     public async Task<AppUser?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByIdAsync(id.ToString());
@@ -39,7 +45,10 @@ public class AppUserRepository : IAppUserRepository
         return AppUserDbToAppUser(appUserDb);
     }
 
-    public async Task<AppUser> GetUserByEmail(string email, CancellationToken cancellationToken)
+    /// <summary>
+    /// Method to get appUser by email, mainly for login
+    /// </summary>
+    public async Task<AppUser> GetUserByEmailAsyn(string email, CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByEmailAsync(email);
 
@@ -51,6 +60,9 @@ public class AppUserRepository : IAppUserRepository
         return AppUserDbToAppUser(appUserDb);
     }
 
+    /// <summary>
+    /// Method to validate password
+    /// </summary>
     public async Task<bool> ValidatePasswordAsync(Guid id, string password, CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByIdAsync(id.ToString());
@@ -62,6 +74,41 @@ public class AppUserRepository : IAppUserRepository
         return await _userManager.CheckPasswordAsync(appUserDb, password);
     }
 
+    /// <summary>
+    /// Method to check token
+    /// </summary>
+    public async Task<bool> CheckTokenAsync(Guid id, string currentRefreshToken, CancellationToken cancellationToken)
+    {
+        var appUserDb = await _userManager.FindByIdAsync(id.ToString());
+        if (appUserDb == null || appUserDb.RefreshToken != currentRefreshToken ||
+            appUserDb.RefreshTokenExpiry <= DateTime.Now)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Method to set a new refresh token
+    /// </summary>
+    public async Task<string> SetRefreshTokenAsync(Guid id, string refreshToken, DateTime tokenExpirationDate,
+        CancellationToken cancellationToken)
+    {
+        var appUserDb = await _userManager.FindByIdAsync(id.ToString());
+        if (appUserDb == null)
+        {
+            throw new InvalidOperationException("There is no user with such id");
+        }
+        appUserDb.RefreshToken = refreshToken;
+        appUserDb.RefreshTokenExpiry = tokenExpirationDate;
+
+        await _userManager.UpdateAsync(appUserDb);
+        return appUserDb.RefreshToken;
+    }
+
+    /// <summary>
+    /// Method to parse domain to db
+    /// </summary>
     private AppUserDb AppUserToAppUserDb(AppUser user)
     {
         return new AppUserDb
@@ -73,6 +120,9 @@ public class AppUserRepository : IAppUserRepository
         };
     }
 
+    /// <summary>
+    /// Method to parse db to domain
+    /// </summary>
     private AppUser AppUserDbToAppUser(AppUserDb appUserDb)
     {
         var firstName = appUserDb.FullName.Split(" ")[0];
