@@ -1,5 +1,3 @@
-using Microsoft.IdentityModel.Tokens;
-
 namespace AuthService.Infrastructure.Jwt;
 
 public class JwtSettings

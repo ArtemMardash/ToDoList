@@ -1,14 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using AuthService.Features.Authentication.Login.Models;
 using AuthService.Features.Authentication.Login.Services;
-using AuthService.Features.Authentication.Login.UseCases;
 using AuthService.Features.Authentication.Shared.Repositories;
-using AuthService.Infrastructure.Jwt;
 using AuthService.Infrastructure.Persistence;
 using FluentAssertions;
-using FluentValidation;
 using Mediator;
-using Microsoft.Extensions.Options;
 
 namespace AuthService.Tests.LoginTests;
 

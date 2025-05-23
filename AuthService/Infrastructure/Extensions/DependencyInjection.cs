@@ -6,7 +6,6 @@ using AuthService.Infrastructure.Persistence;
 using AuthService.Infrastructure.Persistence.Entities;
 using AuthService.Infrastructure.Persistence.Repositories;
 using FluentValidation;
-using Mediator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +47,14 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtSettings>(jwtSettings);
 
+        services.AddAuthorization(opt =>
+        {
+            opt.AddPolicy("Bearer", policy =>
+            {
+                policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                policy.RequireAuthenticatedUser();
+            });
+        });
         services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

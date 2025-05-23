@@ -1,11 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.RefreshToken.Models;
 using AuthService.Features.Authentication.Shared.Repositories;
-using AuthService.Infrastructure.Jwt;
 using Mediator;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Features.Authentication.RefreshToken.UserCases;

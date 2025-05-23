@@ -1,9 +1,6 @@
-using AuthService.Core.Entities;
 using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.Shared.Repositories;
-using AuthService.Infrastructure.Jwt;
 using AuthService.Infrastructure.Persistence;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Tests.JwtServiceTests;

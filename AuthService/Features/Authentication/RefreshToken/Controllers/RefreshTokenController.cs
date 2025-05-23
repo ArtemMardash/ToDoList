@@ -9,7 +9,6 @@ public static class RefreshTokenController
     /// <summary>
     /// Controller to refresh token
     /// </summary>
-    /// <param name="app"></param>
     public static void RefreshToken(this WebApplication app)
     {
         app.MapPost("/api/AuthService/Token/Refresh",
@@ -19,6 +18,7 @@ public static class RefreshTokenController
                     var jwt = await mediator.Send(request, cancellationToken);
                     return jwt;
                 })
+            .RequireAuthorization("Bearer")
             .WithName("RefreshToken")
             .WithTags("AppUsers")
             .WithOpenApi();

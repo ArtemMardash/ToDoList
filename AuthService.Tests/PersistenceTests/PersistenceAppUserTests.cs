@@ -2,17 +2,7 @@ using AuthService.Core.Entities;
 using AuthService.Core.ValueObjects;
 using AuthService.Features.Authentication.Shared.Repositories;
 using AuthService.Infrastructure.Persistence;
-using AuthService.Infrastructure.Persistence.Entities;
-using AuthService.Infrastructure.Persistence.Repositories;
 using FluentAssertions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
-using ILogger = Castle.Core.Logging.ILogger;
 
 namespace AuthService.Tests.PersistenceTests;
 

@@ -1,5 +1,4 @@
 using AuthService.Core.ValueObjects;
-using Microsoft.AspNetCore.Identity;
 
 namespace AuthService.Core.Entities;
 
