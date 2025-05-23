@@ -42,7 +42,7 @@ public class JwtServiceTests
         var user = await _repository.GetUserByIdAsync(_existedAppUserId, CancellationToken.None);
         var token = _jwtService.GenerateRefreshToken(user);
 
-        var claims = _jwtService.ValidateToken(token, true);
+        var claims = _jwtService.ValidateToken(token.refreshToken, true);
 
         Verify(claims);
     }

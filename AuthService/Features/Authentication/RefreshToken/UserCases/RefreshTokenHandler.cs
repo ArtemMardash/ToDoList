@@ -43,16 +43,20 @@ public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTo
             throw new InvalidOperationException("Can't parse to Id");
         }
         var user = await _appUserRepository.GetUserByIdAsync(userId, cancellationToken);
-        var refreshToken = _jwtService.GenerateRefreshToken(user);
-        if (!await _appUserRepository.CheckTokenAsync(user.Id, refreshToken, cancellationToken))
+        if (!await _appUserRepository.CheckTokenAsync(user.Id, request.RefreshToken, cancellationToken))
         {
             throw new UnauthorizedAccessException("Access denied");
         }
+        var refreshTokenSet = _jwtService.GenerateRefreshToken(user);
+        await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt, cancellationToken);
         
-        var newToken = await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshToken, DateTime.Now.AddDays(7), cancellationToken);
+        
+        
         return new RefreshTokenResult
         {
-            RefreshToken = newToken
+            AccessToken = _jwtService.GenerateAccessToken(user),
+            RefreshToken = refreshTokenSet.refreshToken,
+
         };
     }
 }

@@ -34,7 +34,7 @@ public class RegisterAppUserTests
 
         var result =await _mediator.Send(registerRequest, CancellationToken.None);
 
-        result.Id.Should().NotBe(null);
+        result.Id.Should().NotBeEmpty();
     }
     
     [Theory]

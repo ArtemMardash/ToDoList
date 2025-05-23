@@ -68,18 +68,21 @@ public class JwtService: IJwtService
     /// <summary>
     /// Method to generate refresh token
     /// </summary>
-    public string GenerateRefreshToken(AppUser appUser)
+    public (string refreshToken, DateTime expiriesAt) GenerateRefreshToken(AppUser appUser)
     {
-        return BuildToken(
+        var expiriesAt = DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshToken.ExpiryInMinutes);
+        var token = BuildToken(
             appUser,
             _jwtSettings.RefreshToken.Key,
-            DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshToken.ExpiryInMinutes),
+            expiriesAt,
             additionalClaims: new[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("token_type", "refresh")
             }
         );
+
+        return (token, expiriesAt);
     }
 
     /// <summary>

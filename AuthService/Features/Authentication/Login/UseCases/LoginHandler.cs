@@ -45,12 +45,15 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
         }
 
         var accessToken = _jwtService.GenerateAccessToken(user);
-        var refreshToken = _jwtService.GenerateRefreshToken(user);
+        var refreshTokenSet = _jwtService.GenerateRefreshToken(user);
+
+        await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt,
+            cancellationToken);
         
         return new LoginRequestResult
         {
             AccessToken = accessToken,
-            RefreshToken = refreshToken
+            RefreshToken = refreshTokenSet.refreshToken
         };
 
     }

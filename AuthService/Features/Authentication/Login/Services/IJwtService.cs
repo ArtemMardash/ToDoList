@@ -13,7 +13,7 @@ public interface IJwtService
     /// <summary>
     /// Method to generate refresh token
     /// </summary>
-    public string GenerateRefreshToken(AppUser appUser);
+    public (string refreshToken, DateTime expiriesAt) GenerateRefreshToken(AppUser appUser);
 
     /// <summary>
     /// Method to validate token

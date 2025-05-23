@@ -33,6 +33,6 @@ public interface IAppUserRepository
     /// <summary>
     /// Method to set a new refresh token
     /// </summary>
-    public Task<string> SetRefreshTokenAsync(Guid id, string refreshToken, DateTime tokenExpirationDate,
+    public Task SetRefreshTokenAsync(Guid id, string refreshToken, DateTime tokenExpirationDate,
         CancellationToken cancellationToken);
 }

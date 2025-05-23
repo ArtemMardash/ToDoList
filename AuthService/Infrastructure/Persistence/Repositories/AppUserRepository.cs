@@ -91,7 +91,7 @@ public class AppUserRepository : IAppUserRepository
     /// <summary>
     /// Method to set a new refresh token
     /// </summary>
-    public async Task<string> SetRefreshTokenAsync(Guid id, string refreshToken, DateTime tokenExpirationDate,
+    public async Task SetRefreshTokenAsync(Guid id, string refreshToken, DateTime tokenExpirationDate,
         CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByIdAsync(id.ToString());
@@ -103,7 +103,6 @@ public class AppUserRepository : IAppUserRepository
         appUserDb.RefreshTokenExpiry = tokenExpirationDate;
 
         await _userManager.UpdateAsync(appUserDb);
-        return appUserDb.RefreshToken;
     }
 
     /// <summary>
