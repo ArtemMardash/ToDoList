@@ -18,6 +18,9 @@ public class JwtService: IJwtService
         _jwtSettings = jwtSettings.Value;
     }
 
+    /// <summary>
+    /// Method to build token
+    /// </summary>
     private string BuildToken(AppUser appUser, string secretKey, DateTime experation, IEnumerable<Claim> additionalClaims)
     {
         var claims = new List<Claim>
@@ -43,6 +46,11 @@ public class JwtService: IJwtService
         return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 
+    /// <summary>
+    /// Method to generate access token
+    /// </summary>
+    /// <param name="appUser"></param>
+    /// <returns></returns>
     public string GenerateAccessToken(AppUser appUser)
     {
         return BuildToken(
@@ -57,6 +65,9 @@ public class JwtService: IJwtService
         );
     }
 
+    /// <summary>
+    /// Method to generate refresh token
+    /// </summary>
     public string GenerateRefreshToken(AppUser appUser)
     {
         return BuildToken(
@@ -71,6 +82,9 @@ public class JwtService: IJwtService
         );
     }
 
+    /// <summary>
+    /// Method to validate token and get claims
+    /// </summary>
     public ClaimsPrincipal ValidateToken(string token, bool isRefresh)
     {
         var key = Encoding.UTF8.GetBytes( isRefresh ? _jwtSettings.RefreshToken.Key : _jwtSettings.AccessToken.Key);

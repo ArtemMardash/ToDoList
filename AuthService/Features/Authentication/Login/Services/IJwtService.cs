@@ -5,9 +5,18 @@ namespace AuthService.Features.Authentication.Login.Services;
 
 public interface IJwtService
 {
+    /// <summary>
+    /// Method to generate access token
+    /// </summary>
     public string GenerateAccessToken(AppUser appUser);
 
+    /// <summary>
+    /// Method to generate refresh token
+    /// </summary>
     public string GenerateRefreshToken(AppUser appUser);
 
+    /// <summary>
+    /// Method to validate token
+    /// </summary>
     public ClaimsPrincipal ValidateToken(string token, bool isRefresh);
 }

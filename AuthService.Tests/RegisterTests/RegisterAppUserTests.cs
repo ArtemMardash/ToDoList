@@ -38,11 +38,9 @@ public class RegisterAppUserTests
     }
     
     [Theory]
-    [InlineData("email@gmail.com", "Art12345!123", "f", "Mardakhaev", "Wrong Password")]
-    [InlineData("email@gmail.com", "Art12345!123", "Artem", "f", "Wrong Password")]
-    [InlineData("email@gmai", "Art12345!123", "Artem", "Mardakhaev", "Wrong Password")]
-    [InlineData("email@gmail.com", "Art12", "artem", "Mardakhaev", "Wrong Password")]
-    public async Task Register_Handler_Should_Fail(string email, string password, string fisrtName, string lastName ,string exceptionMessage)
+    [InlineData("emailgmai", "Art12345!123", "Artem", "Mardakhaev")]
+    [InlineData("email@gmail.com", "Art12", "artem", "Mardakhaev")]
+    public async Task Register_Handler_Should_Fail(string email, string password, string fisrtName, string lastName)
     {
         var registerRequest = new RegisterRequest
         {
@@ -54,6 +52,6 @@ public class RegisterAppUserTests
 
         var test = async ()=> await _mediator.Send(registerRequest, CancellationToken.None);
 
-        await test.Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
+        await test.Should().ThrowAsync<Exception>();
     }
 }

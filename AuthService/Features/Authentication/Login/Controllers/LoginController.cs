@@ -6,6 +6,10 @@ namespace AuthService.Features.Authentication.Login.Controllers;
 
 public static class LoginController
 {
+    /// <summary>
+    /// Login Controller
+    /// </summary>
+    /// <param name="app"></param>
     public static void LoginUser(this WebApplication app)
     {
         app.MapPost("/api/AuthService/AppUsers/login",

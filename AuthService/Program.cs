@@ -1,4 +1,5 @@
 using AuthService.Features.Authentication.Login.Controllers;
+using AuthService.Features.Authentication.RefreshToken.Controllers;
 using AuthService.Infrastructure.Extensions;
 using AuthService.Features.Authentication.Register.Controllers;
 using AuthService.Infrastructure.Persistence;
@@ -24,9 +25,10 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetService<AuthDbContext>();
     context?.Database.Migrate();
 }
- 
+
 app.RegisterUser();
 app.LoginUser();
+app.RefreshToken();
 
 app.UseSwagger();
 app.UseSwaggerUI();

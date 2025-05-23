@@ -21,6 +21,9 @@ public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTo
         _appUserRepository = appUserRepository;
     }
     
+    /// <summary>
+    /// Method to refresh token
+    /// </summary>
     public async ValueTask<RefreshTokenResult> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         ClaimsPrincipal refreshPrinciples;
@@ -33,6 +36,7 @@ public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTo
             throw new UnauthorizedAccessException("Invalid refresh token");
         }
 
+        
         var userId = Guid.Parse(refreshPrinciples.FindFirstValue(ClaimTypes.NameIdentifier));
         if (userId == null)
         {

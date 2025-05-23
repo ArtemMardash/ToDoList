@@ -18,6 +18,9 @@ public class RegitserHandler : IRequestHandler<RegisterRequest, RegisterRequestR
         _validator = validator;
     }
 
+    /// <summary>
+    /// Handler to register user
+    /// </summary>
     public async ValueTask<RegisterRequestResult> Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);

@@ -10,8 +10,17 @@ namespace AuthService.Features.Authentication.Login.UseCases;
 
 public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
 {
+    /// <summary>
+    /// User repository to get user
+    /// </summary>
     private readonly IAppUserRepository _appUserRepository;
+    /// <summary>
+    /// Validator of models
+    /// </summary>
     private readonly IValidator<LoginRequest> _validator;
+    /// <summary>
+    /// Jwt service to create token
+    /// </summary>
     private readonly IJwtService _jwtService;
 
     public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, IJwtService jwtService)
@@ -21,6 +30,9 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
         _jwtService = jwtService;
     }
     
+    /// <summary>
+    /// Login handler
+    /// </summary>
     public async ValueTask<LoginRequestResult> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);

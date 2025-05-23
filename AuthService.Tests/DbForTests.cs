@@ -1,6 +1,7 @@
 using System.Text;
 using AuthService.Core.Entities;
 using AuthService.Core.ValueObjects;
+using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.Shared.Repositories;
 using AuthService.Infrastructure.Extensions;
 using AuthService.Infrastructure.Jwt;
@@ -33,7 +34,7 @@ public class DbForTests
         var loggerMock = Substitute.For<ILogger<UserManager<AppUserDb>>>();
         
         var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]!);
+        var key = Encoding.ASCII.GetBytes(jwtSettings["AccessToken:Key"]!);
 
 
         services.AddDbContext<AuthDbContext>(opt =>
@@ -50,7 +51,7 @@ public class DbForTests
             .AddDefaultTokenProviders();
         services.AddScoped<ILogger<UserManager<AppUserDb>>>(sp => loggerMock);
         
-        services.AddScoped<JwtService>();
+        services.AddScoped<IJwtService, JwtService >();
         services.Configure<JwtSettings>(jwtSettings);
 
         services.AddAuthentication(opt =>
@@ -92,7 +93,7 @@ public class DbForTests
         return config;
     }
 
-    public T GetRequiredService<T>()
+    public T GetRequiredService<T>() where T : notnull
     {
         return _serviceProvider.GetRequiredService<T>();
     }

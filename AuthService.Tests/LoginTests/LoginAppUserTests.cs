@@ -19,13 +19,15 @@ public class LoginAppUserTests
     private Guid _existedAppUserId;
     private readonly DbForTests _dbService = new DbForTests();
     private IMediator _mediator;
+    private IJwtService _jwtService;
 
     public LoginAppUserTests()
     {
         _appUserRepository = _dbService.GetRequiredService<IAppUserRepository>();
         _dbContext = _dbService.GetRequiredService<AuthDbContext>();
-        _mediator = _dbService.GetRequiredService<IMediator>();
         _dbService.Migrate(_dbContext);
+        _mediator = _dbService.GetRequiredService<IMediator>();
+        _jwtService = _dbService.GetRequiredService<IJwtService>();
         _existedAppUserId = _dbService.GetUserId(_appUserRepository, _dbContext);
     }
     
@@ -39,8 +41,14 @@ public class LoginAppUserTests
         };
 
         var result =await _mediator.Send(loginRequest, CancellationToken.None);
-
+        
+        
         result.AccessToken.Should().NotBeNull();
+        result.RefreshToken.Should().NotBeNull();
+        _jwtService.ValidateToken(result.AccessToken, false).Should().NotBeNull();
+        _jwtService.ValidateToken(result.RefreshToken, true).Should().NotBeNull();
+
+
     }
     
     [Theory]
