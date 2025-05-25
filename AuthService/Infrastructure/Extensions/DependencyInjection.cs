@@ -1,6 +1,7 @@
 using System.Text;
 using AuthService.Features.Authentication.Login.Services;
 using AuthService.Features.Authentication.Shared.Repositories;
+using AuthService.Features.Authentication.Shared.Settings;
 using AuthService.Infrastructure.Jwt;
 using AuthService.Infrastructure.Persistence;
 using AuthService.Infrastructure.Persistence.Entities;
@@ -9,6 +10,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Infrastructure.Extensions;
@@ -18,7 +20,7 @@ public static class DependencyInjection
     public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAppUserRepository, AppUserRepository>();
-        
+
         services.AddDbContext<AuthDbContext>(opt =>
         {
             opt.UseNpgsql(
@@ -30,19 +32,18 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<AuthDbContext>()
             .AddDefaultTokenProviders();
     }
-    
+
     public static void AddInfrastructure(this IServiceCollection services)
     {
-        services.AddMediator(options =>
-        {
-            options.ServiceLifetime = ServiceLifetime.Transient;
-        });
+        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Transient; });
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
     }
 
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
+        var jwtSettings = configuration.GetSection("Jwt") ?? throw new InvalidOperationException("No Jwt section");
+        var externalAuthSettings = configuration.GetSection(nameof(ExternalAuthSettings)) ??
+                                   throw new InvalidOperationException("No external auth section");
         var key = Encoding.ASCII.GetBytes(jwtSettings["AccessToken:Key"]!);
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtSettings>(jwtSettings);
@@ -71,6 +72,18 @@ public static class DependencyInjection
                     ValidIssuer = jwtSettings["Issuer"],
                     ValidAudience = jwtSettings["Audience"]
                 };
+            })
+            .AddCookie(opt =>
+            {
+                opt.Cookie.SameSite = SameSiteMode.Lax;
+                opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            })
+            .AddGoogle(opt =>
+            {
+                opt.ClientId = externalAuthSettings["Google:client_id"];
+                opt.ClientSecret = externalAuthSettings["Google:client_secret"];
+                opt.CallbackPath = "/api/auth/google/callback";
+                opt.SaveTokens = true;
             });
     }
 }

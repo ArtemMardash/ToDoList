@@ -10,11 +10,13 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.11.0" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+        <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
         <PackageReference Include="Mediator.Abstractions" Version="2.1.7" />
         <PackageReference Include="Mediator.SourceGenerator" Version="2.1.7">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.16" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.15" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2"/>
@@ -34,6 +36,8 @@
 
     <ItemGroup>
       <Folder Include="Core\Interfaces\" />
+      <Folder Include="Features\Authentication\ExternalAuth\Google\Services\" />
+      <Folder Include="Features\Authentication\ExternalAuth\Google\UseCases\" />
       <Folder Include="Features\Authentication\RefreshToken\Services\" />
       <Folder Include="Features\Authentication\Register\Services\" />
       <Folder Include="Features\Authentication\Shared\Interfaces\" />

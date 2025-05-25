@@ -18,4 +18,11 @@ public class AppUserDb: IdentityUser
     /// Expiry date of refresh token
     /// </summary>
     public DateTime RefreshTokenExpiry { get; set; }
+    
+    public string? GoogleAccessToken { get; set; }
+    
+    public string? GoogleRefreshToken { get; set; }
+    
+    public DateTime GoogleTokenExpiry { get; set; }
+    
 }

@@ -45,6 +45,15 @@ namespace AuthService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("GoogleAccessToken")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GoogleRefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("GoogleTokenExpiry")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
