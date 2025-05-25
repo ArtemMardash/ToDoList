@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Features.Authentication.RefreshToken.UserCases;
 
-public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTokenResult>
+public class RefreshTokenHandler : IRequestHandler<RefreshTokenRequest, RefreshTokenResult>
 {
     private readonly IJwtService _jwtService;
     private readonly IAppUserRepository _appUserRepository;
@@ -17,7 +17,7 @@ public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTo
         _jwtService = jwtService;
         _appUserRepository = appUserRepository;
     }
-    
+
     /// <summary>
     /// Method to refresh token
     /// </summary>
@@ -33,27 +33,28 @@ public class RefreshTokenHandler: IRequestHandler<RefreshTokenRequest, RefreshTo
             throw new UnauthorizedAccessException("Invalid refresh token");
         }
 
-        
+
         var userId = Guid.Parse(refreshPrinciples.FindFirstValue(ClaimTypes.NameIdentifier));
         if (userId == null)
         {
             throw new InvalidOperationException("Can't parse to Id");
         }
+
         var user = await _appUserRepository.GetUserByIdAsync(userId, cancellationToken);
         if (!await _appUserRepository.CheckTokenAsync(user.Id, request.RefreshToken, cancellationToken))
         {
             throw new UnauthorizedAccessException("Access denied");
         }
+
         var refreshTokenSet = _jwtService.GenerateRefreshToken(user);
-        await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt, cancellationToken);
-        
-        
-        
+        await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt,
+            cancellationToken);
+
+
         return new RefreshTokenResult
         {
             AccessToken = _jwtService.GenerateAccessToken(user),
             RefreshToken = refreshTokenSet.refreshToken,
-
         };
     }
 }

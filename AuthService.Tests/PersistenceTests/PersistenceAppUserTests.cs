@@ -11,7 +11,7 @@ public class PersistenceAppUserTests: IDisposable
     private static IAppUserRepository _appUserRepository;
     private static AuthDbContext _dbContext;
     private static Guid _existedAppUserId;
-    private readonly DbForTests _dbService = new DbForTests();
+    private readonly IntegrationTestsHelper _dbService = new IntegrationTestsHelper();
 
     public PersistenceAppUserTests()
     {

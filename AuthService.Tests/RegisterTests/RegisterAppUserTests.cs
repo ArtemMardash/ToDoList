@@ -10,7 +10,7 @@ public class RegisterAppUserTests
 {
     private IAppUserRepository _appUserRepository;
     private AuthDbContext _dbContext;
-    private readonly DbForTests _dbService = new DbForTests();
+    private readonly IntegrationTestsHelper _dbService = new IntegrationTestsHelper();
     private IMediator _mediator;
 
     public RegisterAppUserTests()

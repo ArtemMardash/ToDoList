@@ -7,18 +7,18 @@ namespace AuthService.Tests.JwtServiceTests;
 
 public class JwtServiceTests
 {
-    private readonly DbForTests _dbForTests = new DbForTests();
+    private readonly IntegrationTestsHelper _integrationTestsHelper = new IntegrationTestsHelper();
     private IAppUserRepository _repository;
     private IJwtService _jwtService;
     private Guid _existedAppUserId;
     private DbContext _dbContext;
     public JwtServiceTests()
     {
-        _repository = _dbForTests.GetRequiredService<IAppUserRepository>();
-        _jwtService = _dbForTests.GetRequiredService<IJwtService>();
-        _dbContext = _dbForTests.GetRequiredService<AuthDbContext>();
-        _dbForTests.Migrate(_dbContext);
-        _existedAppUserId = _dbForTests.GetUserId(_repository, _dbContext);
+        _repository = _integrationTestsHelper.GetRequiredService<IAppUserRepository>();
+        _jwtService = _integrationTestsHelper.GetRequiredService<IJwtService>();
+        _dbContext = _integrationTestsHelper.GetRequiredService<AuthDbContext>();
+        _integrationTestsHelper.Migrate(_dbContext);
+        _existedAppUserId = _integrationTestsHelper.GetUserId(_repository, _dbContext);
     }
 
     

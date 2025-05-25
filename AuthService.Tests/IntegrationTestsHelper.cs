@@ -21,12 +21,12 @@ using NSubstitute;
 
 namespace AuthService.Tests;
 
-public class DbForTests
+public class IntegrationTestsHelper
 {
     private IServiceProvider _serviceProvider;
 
 
-    public DbForTests()
+    public IntegrationTestsHelper()
     {
         var builder = WebApplication.CreateBuilder();
         var configuration = GetConfiguration();
