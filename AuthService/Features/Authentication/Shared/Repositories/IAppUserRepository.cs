@@ -1,4 +1,3 @@
-
 using AuthService.Core.Entities;
 
 namespace AuthService.Features.Authentication.Shared.Repositories;
@@ -9,7 +8,7 @@ public interface IAppUserRepository
     /// Method to add a new user
     /// </summary>
     public Task<Guid> CreateUserAsync(AppUser user, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Method to get user by id
     /// </summary>

@@ -3,23 +3,23 @@ using Mediator;
 
 namespace AuthService.Features.Authentication.Register.Models;
 
-public class RegisterRequest: IRequest<RegisterRequestResult>
+public class RegisterRequest : IRequest<RegisterRequestResult>
 {
     /// <summary>
     /// Email of user
     /// </summary>
     public string Email { get; set; }
-    
+
     /// <summary>
     /// Password of user
     /// </summary>
     public string Password { get; set; }
-    
+
     /// <summary>
     /// First name of user
     /// </summary>
     public string FirstName { get; set; }
-    
+
     /// <summary>
     /// Last Name of iser
     /// </summary>
@@ -34,7 +34,7 @@ public class RegisterRequestResult
     public Guid Id { get; set; }
 }
 
-public class RegisterValidator: AbstractValidator<RegisterRequest>
+public class RegisterValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterValidator()
     {

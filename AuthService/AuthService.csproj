@@ -35,7 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Core\Interfaces\" />
       <Folder Include="Features\Authentication\ExternalAuth\Google\Services\" />
       <Folder Include="Features\Authentication\ExternalAuth\Google\UseCases\" />
       <Folder Include="Features\Authentication\RefreshToken\Services\" />

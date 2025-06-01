@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Infrastructure.Jwt;
 
-public class JwtService: IJwtService
+public class JwtService : IJwtService
 {
     private readonly JwtSettings _jwtSettings;
 
@@ -20,7 +20,8 @@ public class JwtService: IJwtService
     /// <summary>
     /// Method to build token
     /// </summary>
-    private string BuildToken(AppUser appUser, string secretKey, DateTime experation, IEnumerable<Claim> additionalClaims)
+    private string BuildToken(AppUser appUser, string secretKey, DateTime experation,
+        IEnumerable<Claim> additionalClaims)
     {
         var claims = new List<Claim>
         {
@@ -31,7 +32,7 @@ public class JwtService: IJwtService
         {
             claims.AddRange(additionalClaims);
         }
-        
+
         var jwt = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
@@ -39,7 +40,7 @@ public class JwtService: IJwtService
             expires: experation,
             signingCredentials: new SigningCredentials(
                 new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(secretKey)), 
+                    Encoding.UTF8.GetBytes(secretKey)),
                 SecurityAlgorithms.HmacSha256)
         );
         return new JwtSecurityTokenHandler().WriteToken(jwt);
@@ -89,7 +90,7 @@ public class JwtService: IJwtService
     /// </summary>
     public ClaimsPrincipal ValidateToken(string token, bool isRefresh)
     {
-        var key = Encoding.UTF8.GetBytes( isRefresh ? _jwtSettings.RefreshToken.Key : _jwtSettings.AccessToken.Key);
+        var key = Encoding.UTF8.GetBytes(isRefresh ? _jwtSettings.RefreshToken.Key : _jwtSettings.AccessToken.Key);
         var validationParams = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,

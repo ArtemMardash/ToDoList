@@ -26,7 +26,7 @@ public static class LoginController
             .WithName("GoogleCallback")
             .WithTags("Google")
             .WithOpenApi();
-        
+
         app.MapGet("/api/auth/google/login",
                 async (HttpContext context) =>
                 {
@@ -40,9 +40,6 @@ public static class LoginController
             .WithTags("Google")
             .WithOpenApi();
 
-        app.MapGet("/api/auth/google/profile", (ClaimsPrincipal user) =>
-        {
-            return user;
-        }).RequireAuthorization();
+        app.MapGet("/api/auth/google/profile", (ClaimsPrincipal user) => { return user; }).RequireAuthorization();
     }
 }

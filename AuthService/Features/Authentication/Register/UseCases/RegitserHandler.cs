@@ -27,7 +27,7 @@ public class RegitserHandler : IRequestHandler<RegisterRequest, RegisterRequestR
 
         var appUser = new AppUser(request.Email, request.Password, new FullName(request.FirstName, request.LastName));
         var id = await _userRepository.CreateUserAsync(appUser, cancellationToken);
-        
+
         return new RegisterRequestResult
         {
             Id = id

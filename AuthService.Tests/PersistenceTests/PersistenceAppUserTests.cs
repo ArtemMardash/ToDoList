@@ -6,7 +6,7 @@ using FluentAssertions;
 
 namespace AuthService.Tests.PersistenceTests;
 
-public class PersistenceAppUserTests: IDisposable
+public class PersistenceAppUserTests : IDisposable
 {
     private static IAppUserRepository _appUserRepository;
     private static AuthDbContext _dbContext;
@@ -49,7 +49,7 @@ public class PersistenceAppUserTests: IDisposable
         settings.IgnoreMember(nameof(appUser.Password));
         await Verify(appUser, settings);
     }
-    
+
     [Fact]
     public async Task Get_User_By_Email_Should_Be_Successful()
     {

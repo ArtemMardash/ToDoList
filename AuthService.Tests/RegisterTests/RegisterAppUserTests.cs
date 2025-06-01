@@ -20,7 +20,7 @@ public class RegisterAppUserTests
         _mediator = _dbService.GetRequiredService<IMediator>();
         _dbService.Migrate(_dbContext);
     }
-    
+
     [Fact]
     public async Task Register_Handler_Should_Be_Successful()
     {
@@ -32,11 +32,11 @@ public class RegisterAppUserTests
             LastName = "Tem"
         };
 
-        var result =await _mediator.Send(registerRequest, CancellationToken.None);
+        var result = await _mediator.Send(registerRequest, CancellationToken.None);
 
         result.Id.Should().NotBeEmpty();
     }
-    
+
     [Theory]
     [InlineData("emailgmai", "Art12345!123", "Artem", "Mardakhaev")]
     [InlineData("email@gmail.com", "Art12", "artem", "Mardakhaev")]
@@ -50,7 +50,7 @@ public class RegisterAppUserTests
             LastName = lastName
         };
 
-        var test = async ()=> await _mediator.Send(registerRequest, CancellationToken.None);
+        var test = async () => await _mediator.Send(registerRequest, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>();
     }

@@ -54,7 +54,7 @@ public class AppUserRepository : IAppUserRepository
 
         if (appUserDb == null)
         {
-            throw new InvalidOperationException( "There is no appUser with such email");
+            throw new InvalidOperationException("There is no appUser with such email");
         }
 
         return AppUserDbToAppUser(appUserDb);
@@ -85,6 +85,7 @@ public class AppUserRepository : IAppUserRepository
         {
             return false;
         }
+
         return true;
     }
 
@@ -99,6 +100,7 @@ public class AppUserRepository : IAppUserRepository
         {
             throw new InvalidOperationException("There is no user with such id");
         }
+
         appUserDb.RefreshToken = refreshToken;
         appUserDb.RefreshTokenExpiry = tokenExpirationDate;
 

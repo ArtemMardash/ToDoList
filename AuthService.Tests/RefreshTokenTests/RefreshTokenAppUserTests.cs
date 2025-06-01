@@ -36,7 +36,7 @@ public class RefreshTokenAppUserTests
             Password = "Ar12345!"
         };
 
-        var tokens =await _mediator.Send(loginRequest, CancellationToken.None);
+        var tokens = await _mediator.Send(loginRequest, CancellationToken.None);
 
         var refreshTokenRequest = new RefreshTokenRequest
         {
@@ -50,8 +50,20 @@ public class RefreshTokenAppUserTests
         _jwtService.ValidateToken(result.RefreshToken, true).Should().NotBeNull();
         _jwtService.ValidateToken(result.AccessToken, false).Should().NotBeNull();
     }
-    
-    
-    
 
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("artdsncecscsc")]
+    public async Task Refresh_User_Token_Should_Fail(string token)
+    {
+        var refreshTokenRequest = new RefreshTokenRequest
+        {
+            RefreshToken = token
+        };
+
+        var test = async () => await _mediator.Send(refreshTokenRequest, CancellationToken.None);
+
+        await test.Should().ThrowAsync<Exception>();
+    }
 }

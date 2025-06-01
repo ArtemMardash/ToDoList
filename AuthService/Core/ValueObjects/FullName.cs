@@ -2,8 +2,6 @@ namespace AuthService.Core.ValueObjects;
 
 public class FullName
 {
-
-
     /// <summary>
     /// First name
     /// </summary>

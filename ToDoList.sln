@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Tests", "AuthService.Tests\AuthService.Tests.csproj", "{688342C8-0369-4F11-AD5A-09B402D1B0DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService", "TaskService\TaskService.csproj", "{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,10 @@ Global
 		{688342C8-0369-4F11-AD5A-09B402D1B0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{688342C8-0369-4F11-AD5A-09B402D1B0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{688342C8-0369-4F11-AD5A-09B402D1B0DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

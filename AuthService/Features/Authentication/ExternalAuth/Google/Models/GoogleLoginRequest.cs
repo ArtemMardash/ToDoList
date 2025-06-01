@@ -6,7 +6,7 @@ public class GoogleLoginRequest
     /// Email to get user
     /// </summary>
     public string Email { get; set; }
-    
+
     /// <summary>
     /// Password to get access
     /// </summary>

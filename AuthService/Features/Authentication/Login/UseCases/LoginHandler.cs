@@ -6,28 +6,31 @@ using Mediator;
 
 namespace AuthService.Features.Authentication.Login.UseCases;
 
-public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
+public class LoginHandler : IRequestHandler<LoginRequest, LoginRequestResult>
 {
     /// <summary>
     /// User repository to get user
     /// </summary>
     private readonly IAppUserRepository _appUserRepository;
+
     /// <summary>
     /// Validator of models
     /// </summary>
     private readonly IValidator<LoginRequest> _validator;
+
     /// <summary>
     /// Jwt service to create token
     /// </summary>
     private readonly IJwtService _jwtService;
 
-    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator, IJwtService jwtService)
+    public LoginHandler(IAppUserRepository appUserRepository, IValidator<LoginRequest> validator,
+        IJwtService jwtService)
     {
         _appUserRepository = appUserRepository;
         _validator = validator;
         _jwtService = jwtService;
     }
-    
+
     /// <summary>
     /// Login handler
     /// </summary>
@@ -47,12 +50,11 @@ public class LoginHandler: IRequestHandler<LoginRequest, LoginRequestResult>
 
         await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt,
             cancellationToken);
-        
+
         return new LoginRequestResult
         {
             AccessToken = accessToken,
             RefreshToken = refreshTokenSet.refreshToken
         };
-
     }
 }

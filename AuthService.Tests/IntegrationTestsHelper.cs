@@ -32,8 +32,8 @@ public class IntegrationTestsHelper
         var configuration = GetConfiguration();
         var services = builder.Services;
         var loggerMock = Substitute.For<ILogger<UserManager<AppUserDb>>>();
-        
-        var jwtSettings = configuration.GetSection("Jwt")?? throw new InvalidOperationException("No Jwt section");
+
+        var jwtSettings = configuration.GetSection("Jwt") ?? throw new InvalidOperationException("No Jwt section");
         var key = Encoding.ASCII.GetBytes(jwtSettings["AccessToken:Key"]!);
 
 
@@ -44,14 +44,14 @@ public class IntegrationTestsHelper
                 $"Host=localHost;Port=5432;Database=TestAuthDb_{Guid.NewGuid()};Username=postgres;Password=postgres",
                 builder => builder.MigrationsAssembly(typeof(AuthDbContext).Assembly.GetName().Name));
         });
-        
+
         services.AddScoped<IAppUserRepository, AppUserRepository>();
         services.AddIdentity<AppUserDb, IdentityRole>()
             .AddEntityFrameworkStores<AuthDbContext>()
             .AddDefaultTokenProviders();
         services.AddScoped<ILogger<UserManager<AppUserDb>>>(sp => loggerMock);
-        
-        services.AddScoped<IJwtService, JwtService >();
+
+        services.AddScoped<IJwtService, JwtService>();
         services.Configure<JwtSettings>(jwtSettings);
 
         services.AddAuthentication(opt =>
@@ -71,11 +71,8 @@ public class IntegrationTestsHelper
                     ValidAudience = jwtSettings["Audience"]
                 };
             });
-        
-        services.AddMediator(options =>
-        {
-            options.ServiceLifetime = ServiceLifetime.Transient;
-        });
+
+        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Transient; });
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         var scope = builder.Build().Services.CreateScope();
@@ -97,6 +94,7 @@ public class IntegrationTestsHelper
     {
         return _serviceProvider.GetRequiredService<T>();
     }
+
     public Guid GetUserId(IAppUserRepository userRepository, DbContext context)
     {
         var id = userRepository.CreateUserAsync(
@@ -111,5 +109,4 @@ public class IntegrationTestsHelper
     {
         context.Database.Migrate();
     }
-    
 }

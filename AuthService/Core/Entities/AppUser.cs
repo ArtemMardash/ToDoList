@@ -8,22 +8,22 @@ public class AppUser
     /// Id of Application User
     /// </summary>
     public Guid Id { get; private set; }
-    
+
     /// <summary>
     /// Email of user
     /// </summary>
     public string Email { get; private set; }
-    
+
     /// <summary>
     /// Password of user
     /// </summary>
     public string Password { get; private set; }
-    
+
     /// <summary>
     /// Full Name of User
     /// </summary>
     public FullName FullName { get; private set; }
-    
+
 
     /// <summary>
     /// Constructor for parsing
@@ -46,5 +46,4 @@ public class AppUser
         Password = password;
         FullName = fullName;
     }
-    
 }

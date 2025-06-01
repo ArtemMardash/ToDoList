@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace AuthService.Infrastructure.Persistence;
 
-public class AuthDbContext: IdentityDbContext<AppUserDb>
+public class AuthDbContext : IdentityDbContext<AppUserDb>
 {
-    public AuthDbContext(DbContextOptions options): base(options)
+    public AuthDbContext(DbContextOptions options) : base(options)
     {
     }
-    
 }
 
 public class UserContextFactory : IDesignTimeDbContextFactory<AuthDbContext>

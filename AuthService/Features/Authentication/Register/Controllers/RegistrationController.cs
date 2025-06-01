@@ -13,7 +13,7 @@ public static class RegistrationController
     public static void RegisterUser(this WebApplication app)
     {
         app.MapPost("/api/AuthService/AppUsers/register",
-                async ([FromBody]  RegisterRequest request, IMediator mediator,
+                async ([FromBody] RegisterRequest request, IMediator mediator,
                     CancellationToken cancellationToken) =>
                 {
                     var id = await mediator.Send(request, cancellationToken);

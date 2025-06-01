@@ -25,7 +25,7 @@ public class LoginAppUserTests
         _jwtService = _dbService.GetRequiredService<IJwtService>();
         _existedAppUserId = _dbService.GetUserId(_appUserRepository, _dbContext);
     }
-    
+
     [Fact]
     public async Task Login_Handler_Should_Be_Successful()
     {
@@ -35,17 +35,15 @@ public class LoginAppUserTests
             Password = "Ar12345!"
         };
 
-        var result =await _mediator.Send(loginRequest, CancellationToken.None);
-        
-        
+        var result = await _mediator.Send(loginRequest, CancellationToken.None);
+
+
         result.AccessToken.Should().NotBeNull();
         result.RefreshToken.Should().NotBeNull();
         _jwtService.ValidateToken(result.AccessToken, false).Should().NotBeNull();
         _jwtService.ValidateToken(result.RefreshToken, true).Should().NotBeNull();
-
-
     }
-    
+
     [Theory]
     [InlineData("email@gmail.com", "Art12345!123", "Wrong Password")]
     [InlineData("email@gmail.co", "Art12345!", "There is no appUser with such email")]
@@ -57,7 +55,7 @@ public class LoginAppUserTests
             Password = password
         };
 
-        var test = async ()=> await _mediator.Send(loginRequest, CancellationToken.None);
+        var test = async () => await _mediator.Send(loginRequest, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
     }
