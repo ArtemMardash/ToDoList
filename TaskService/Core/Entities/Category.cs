@@ -16,7 +16,6 @@ public class Category
     /// Description of category
     /// </summary>
     public string Description { get; set; }
-
     
     /// <summary>
     /// Constructor for mapping

@@ -1,36 +1,35 @@
-using TaskService.Core.Interfaces;
 
 namespace TaskService.Core.Entities;
 
-public class SubTask: ITask
+public class SubTask
 {
     public Guid Id { get; set; }
-    
+
     public string Name { get; set; }
     
-    public string Description { get; set; }
-    
-    public Category Category { get; set; }
+    public TaskStatus TaskStatus { get; set; }
 
-    public DateTime Deadline { get; set; }
-    
-    public ITask Parent { get; set; }
+    public Task Parent { get; set; }
 
-    public SubTask(Guid id, string name, string description, DateTime deadline, ITask parent)
+    /// <summary>
+    /// Constructor for mapping
+    /// </summary>
+    public SubTask(Guid id, string name, TaskStatus taskStatus, Task parent)
     {
         Id = id;
         Name = name;
-        Description = description;
-        Deadline = deadline;
+        TaskStatus = taskStatus;
         Parent = parent;
     }
 
-    public SubTask( string name, string description, DateTime deadline, ITask parent)
+    /// <summary>
+    /// Constructor for creating
+    /// </summary>
+    public SubTask(string name, TaskStatus taskStatus, Task parent)
     {
         Id = Guid.NewGuid();
         Name = name;
-        Description = description;
-        Deadline = deadline;
+        TaskStatus = taskStatus;
         Parent = parent;
     }
 }

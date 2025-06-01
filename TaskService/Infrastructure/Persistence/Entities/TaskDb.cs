@@ -1,8 +1,6 @@
-using TaskService.Core.Entities;
+namespace TaskService.Infrastructure.Persistence.Entities;
 
-namespace TaskService.Core.Interfaces;
-
-public interface ITask
+public class TaskDb
 {
     /// <summary>
     /// Id of task
@@ -18,14 +16,20 @@ public interface ITask
     /// Description of the task
     /// </summary>
     public string Description { get; set; }
-    
+
     /// <summary>
     /// Category of the task
     /// </summary>
-    public Category Category { get; set; }
-    
+    public CategoryDb Category { get; set; }
+
     /// <summary>
     /// Deadline of the task
     /// </summary>
     public DateTime Deadline { get; set; }
+    
+    /// <summary>
+    /// Subtasks for one main task
+    /// </summary>
+    public virtual List<SubTaskDb> SubTasks { get; set; }
+
 }

@@ -14,14 +14,16 @@ public static class LoginController
     /// </summary>
     public static void GoogleLoginUser(this WebApplication app)
     {
-        app.MapGet("/api/auth/google/callback",
+        app.MapGet("/api/auth/google/signin",
                 async (HttpContext context) =>
                 {
                     var result = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
                     if (result.Succeeded)
                     {
-                        context.Response.Redirect("/api/auth/google/profile");
+                        return Results.Ok(result.Principal.FindFirstValue(ClaimTypes.Email));
                     }
+
+                    return Results.Unauthorized();
                 })
             .WithName("GoogleCallback")
             .WithTags("Google")
@@ -32,7 +34,7 @@ public static class LoginController
                 {
                     var props = new AuthenticationProperties
                     {
-                        RedirectUri = "/api/auth/google/callback"
+                        RedirectUri = "/api/auth/google/signin"
                     };
                     await context.ChallengeAsync(GoogleDefaults.AuthenticationScheme, props);
                 })

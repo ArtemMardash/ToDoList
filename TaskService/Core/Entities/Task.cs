@@ -1,8 +1,7 @@
-using TaskService.Core.Interfaces;
 
 namespace TaskService.Core.Entities;
 
-public class Task: ITask
+public class Task
 {
     /// <summary>
     /// Id of task
@@ -18,45 +17,52 @@ public class Task: ITask
     /// Description of the task
     /// </summary>
     public string Description { get; set; }
+    
+    /// <summary>
+    /// Deadline of the task
+    /// </summary>
+    public DateTime Deadline { get; set; }
 
+    /// <summary>
+    /// Status of the task
+    /// </summary>
+    public TaskStatus TaskStatus { get; set; }
+    
     /// <summary>
     /// Category of the task
     /// </summary>
     public Category Category { get; set; }
 
     /// <summary>
-    /// Deadline of the task
-    /// </summary>
-    public DateTime Deadline { get; set; }
-    
-    /// <summary>
     /// Subtasks for one main task
     /// </summary>
-    public List<ITask> SubTasks { get; set; }
+    public List<SubTask> SubTasks { get; set; }
     
     /// <summary>
     /// Constructor for creation
     /// </summary>
-    public Task(Guid id, string name, string description, Category category, DateTime deadline, List<ITask>? subTasks)
+    public Task(Guid id, string name, string description, Category category, DateTime deadline, TaskStatus taskStatus ,List<SubTask>? subTasks)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         Name = name;
         Description = description;
         Category = category;
         Deadline = deadline;
-        SubTasks = subTasks ?? new List<ITask>();
+        TaskStatus = taskStatus;
+        SubTasks = subTasks ?? new List<SubTask>();
     }
 
     /// <summary>
     /// Constructor for mapping
     /// </summary>
-    public Task(Guid id, string name, string description, DateTime deadline, List<ITask>? subTasks)
+    public Task(Guid id, string name, string description, DateTime deadline, TaskStatus taskStatus, List<SubTask>? subTasks)
     {
         Id = id;
         Name = name;
         Description = description;
         Deadline = deadline;
-        SubTasks = subTasks ?? new List<ITask>();
+        TaskStatus = taskStatus;
+        SubTasks = subTasks ?? new List<SubTask>();
     }
 
 
