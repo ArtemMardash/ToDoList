@@ -15,12 +15,23 @@ public static class LoginController
     public static void GoogleLoginUser(this WebApplication app)
     {
         app.MapGet("/api/auth/google/signin",
-                async (HttpContext context) =>
+                async (HttpContext context, IMediator mediator, CancellationToken cancellationToken) =>
                 {
                     var result = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
                     if (result.Succeeded)
                     {
-                        return Results.Ok(result.Principal.FindFirstValue(ClaimTypes.Email));
+                        var principal = result.Principal;
+                        var request = new GoogleLoginRequest
+                        {
+                            Email = principal.FindFirstValue(ClaimTypes.Email),
+                            AccessToken = null,
+                            RefreshToken = null,
+                            Expiry = default,
+                            FirstName = principal.FindFirstValue(ClaimTypes.Name),
+                            LastName = principal.FindFirstValue(ClaimTypes.Surname)
+                        };
+
+                        return Results.Ok(await mediator.Send(request, cancellationToken));
                     }
 
                     return Results.Unauthorized();
@@ -28,8 +39,9 @@ public static class LoginController
             .WithName("GoogleCallback")
             .WithTags("Google")
             .WithOpenApi();
+    
 
-        app.MapGet("/api/auth/google/login",
+    app.MapGet("/api/auth/google/login",
                 async (HttpContext context) =>
                 {
                     var props = new AuthenticationProperties

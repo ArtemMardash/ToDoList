@@ -17,7 +17,7 @@ public interface IAppUserRepository
     /// <summary>
     /// Method to get user by email
     /// </summary>
-    public Task<AppUser> GetUserByEmailAsyn(string email, CancellationToken cancellationToken);
+    public Task<AppUser> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
 
     /// <summary>
     /// Method to validate password

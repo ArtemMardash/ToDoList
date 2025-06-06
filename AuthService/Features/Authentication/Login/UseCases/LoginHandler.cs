@@ -38,7 +38,7 @@ public class LoginHandler : IRequestHandler<LoginRequest, LoginRequestResult>
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var user = await _appUserRepository.GetUserByEmailAsyn(request.Email, cancellationToken);
+        var user = await _appUserRepository.GetUserByEmailAsync(request.Email, cancellationToken);
 
         if (!await _appUserRepository.ValidatePasswordAsync(user.Id, request.Password, cancellationToken))
         {

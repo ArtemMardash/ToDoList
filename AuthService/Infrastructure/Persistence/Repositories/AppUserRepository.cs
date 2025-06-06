@@ -48,7 +48,7 @@ public class AppUserRepository : IAppUserRepository
     /// <summary>
     /// Method to get appUser by email, mainly for login
     /// </summary>
-    public async Task<AppUser> GetUserByEmailAsyn(string email, CancellationToken cancellationToken)
+    public async Task<AppUser> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
         var appUserDb = await _userManager.FindByEmailAsync(email);
 
