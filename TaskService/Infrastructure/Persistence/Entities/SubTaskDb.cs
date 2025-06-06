@@ -13,13 +13,12 @@ public class SubTaskDb
     public string Name { get; set; }
     
     /// <summary>
-    /// Description of subtask
+    /// Status of subtask
     /// </summary>
-    public string Description { get; set; }
+    public int TaskStatus { get; set; }
     
-    public DateTime Deadline { get; set; }
-    
-    public virtual TaskDb Parent { get; set; }
-    
+    /// <summary>
+    /// Id of parent(original task)
+    /// </summary>
     public Guid ParentId { get; set; }
 }

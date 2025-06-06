@@ -1,6 +1,6 @@
 namespace TaskService.Core.Enums;
 
-public enum TaskStatus
+public enum TaskAndSubTaskStatus
 {
     Unknown,
     New,

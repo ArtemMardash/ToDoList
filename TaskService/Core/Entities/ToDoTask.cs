@@ -1,12 +1,19 @@
 
+using TaskService.Core.Enums;
+
 namespace TaskService.Core.Entities;
 
-public class Task
+public class ToDoTask
 {
     /// <summary>
     /// Id of task
     /// </summary>
     public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Id of user that wrote/have this task
+    /// </summary>
+    public Guid UserId { get; set; }
     
     /// <summary>
     /// Name of the task
@@ -26,7 +33,7 @@ public class Task
     /// <summary>
     /// Status of the task
     /// </summary>
-    public TaskStatus TaskStatus { get; set; }
+    public TaskAndSubTaskStatus TaskStatus { get; set; }
     
     /// <summary>
     /// Category of the task
@@ -41,9 +48,10 @@ public class Task
     /// <summary>
     /// Constructor for creation
     /// </summary>
-    public Task(Guid id, string name, string description, Category category, DateTime deadline, TaskStatus taskStatus ,List<SubTask>? subTasks)
+    public ToDoTask(Guid userId, string name, string description, Category category, DateTime deadline, TaskAndSubTaskStatus taskStatus ,List<SubTask>? subTasks)
     {
         Id = Guid.NewGuid();
+        UserId = userId;
         Name = name;
         Description = description;
         Category = category;
@@ -55,11 +63,13 @@ public class Task
     /// <summary>
     /// Constructor for mapping
     /// </summary>
-    public Task(Guid id, string name, string description, DateTime deadline, TaskStatus taskStatus, List<SubTask>? subTasks)
+    public ToDoTask(Guid id, Guid userId ,string name, string description, Category category, DateTime deadline, TaskAndSubTaskStatus taskStatus, List<SubTask>? subTasks)
     {
         Id = id;
         Name = name;
+        UserId = userId;
         Description = description;
+        Category = category;
         Deadline = deadline;
         TaskStatus = taskStatus;
         SubTasks = subTasks ?? new List<SubTask>();

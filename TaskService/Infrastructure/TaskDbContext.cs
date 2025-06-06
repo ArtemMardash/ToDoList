@@ -23,7 +23,7 @@ public class TaskDbContext: DbContext
 
     public TaskDbContext(DbContextOptions options): base(options)
     {
-        //Database.EnsureCreated()
+        //Database.EnsureCreated();
     }
  
     /// <summary>
@@ -31,15 +31,15 @@ public class TaskDbContext: DbContext
     /// </summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TaskDb>().HasKey(u => u.Id);
-        modelBuilder.Entity<CategoryDb>().HasKey(u => u.Id);
-        modelBuilder.Entity<SubTaskDb>().HasKey(u => u.Id);
+        modelBuilder.Entity<TaskDb>().HasKey(t => t.Id);
+        modelBuilder.Entity<CategoryDb>().HasKey(c => c.Id);
+        modelBuilder.Entity<SubTaskDb>().HasKey(s => s.Id);
 
-        modelBuilder.Entity<TaskDb>().Property(u => u.Id).ValueGeneratedNever();
-        modelBuilder.Entity<CategoryDb>().Property(u => u.Id).ValueGeneratedNever();
-        modelBuilder.Entity<SubTaskDb>().Property(u => u.Id).ValueGeneratedNever();
+        modelBuilder.Entity<TaskDb>().Property(t => t.Id).ValueGeneratedNever();
+        modelBuilder.Entity<CategoryDb>().Property(c => c.Id).ValueGeneratedNever();
+        modelBuilder.Entity<SubTaskDb>().Property(s => s.Id).ValueGeneratedNever();
 
-        modelBuilder.Entity<TaskDb>().HasMany<SubTaskDb>(t => t.SubTasks).WithOne(s => s.Parent);
+        modelBuilder.Entity<TaskDb>().HasMany<SubTaskDb>(t => t.SubTasks);
         modelBuilder.Entity<TaskDb>().HasOne<CategoryDb>(t => t.Category);
     }
 }

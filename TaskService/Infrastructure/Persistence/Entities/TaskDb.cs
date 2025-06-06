@@ -8,6 +8,11 @@ public class TaskDb
     public Guid Id { get; set; }
     
     /// <summary>
+    /// Id of user
+    /// </summary>
+    public Guid UserId { get; set; }
+    
+    /// <summary>
     /// Name of the task
     /// </summary>
     public string Name { get; set; }
@@ -26,6 +31,11 @@ public class TaskDb
     /// Deadline of the task
     /// </summary>
     public DateTime Deadline { get; set; }
+    
+    /// <summary>
+    /// Status of the task
+    /// </summary>
+    public int TaskStatus { get; set; }
     
     /// <summary>
     /// Subtasks for one main task

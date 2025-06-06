@@ -8,26 +8,26 @@ public interface ITaskRepository
     /// <summary>
     /// Create task
     /// </summary>
-    public Task<Guid> CreateTaskAsync(Task task, CancellationToken cancellationToken);
+    public Task<Guid> CreateTaskAsync(ToDoTask task, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get task by id
     /// </summary>
-    public Task<Task> GetTaskByIdAsync(Guid id, CancellationToken cancellationToken);
+    public Task<ToDoTask> GetTaskByIdAsync(Guid id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Update task
     /// </summary>
-    public Task UpdateTaskAsync(Task task, CancellationToken cancellationToken);
+    public Task UpdateTaskAsync(ToDoTask task, CancellationToken cancellationToken);
     
 
     /// <summary>
     /// Get all tasks by category
     /// </summary>
-    public Task<List<Task>> GetTasksByCategoryAsync(Guid categoryId, CancellationToken cancellationToken);
+    public Task<List<ToDoTask>> GetTasksByCategoryAsync(Guid categoryId, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Delete Task
+    /// Delete ToDoTask
     /// </summary>
     public Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken);
     
