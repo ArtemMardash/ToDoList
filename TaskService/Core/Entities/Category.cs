@@ -6,17 +6,17 @@ public class Category
     /// Id of category
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     /// Name of category
     /// </summary>
     public string Name { get; set; }
-    
+
     /// <summary>
     /// Description of category
     /// </summary>
     public string Description { get; set; }
-    
+
     /// <summary>
     /// Constructor for mapping
     /// </summary>
@@ -30,7 +30,7 @@ public class Category
     /// <summary>
     /// Constructor for creating
     /// </summary>
-    public Category( string name, string description)
+    public Category(string name, string description)
     {
         Id = Guid.NewGuid();
         Name = name;

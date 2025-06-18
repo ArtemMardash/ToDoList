@@ -1,0 +1,13 @@
+﻿{
+  Id: Guid_1,
+  UserId: Guid_2,
+  Name: PushUps,
+  Description: Do 20 push ups,
+  Category: {
+    Id: Guid_3,
+    Name: Sport,
+    Description: Something involved exercising
+  },
+  Deadline: DateTime_1,
+  TaskStatus: New
+}

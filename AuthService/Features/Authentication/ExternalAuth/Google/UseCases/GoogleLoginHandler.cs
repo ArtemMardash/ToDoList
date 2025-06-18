@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace AuthService.Features.Authentication.ExternalAuth.Google.UseCases;
 
-public class GoogleLoginHandler: IRequestHandler<GoogleLoginRequest, GoogleLoginResult>
+public class GoogleLoginHandler : IRequestHandler<GoogleLoginRequest, GoogleLoginResult>
 {
-    
     /// <summary>
     /// User repository to get user
     /// </summary>
@@ -27,7 +26,8 @@ public class GoogleLoginHandler: IRequestHandler<GoogleLoginRequest, GoogleLogin
     /// </summary>
     private readonly IJwtService _jwtService;
 
-    public GoogleLoginHandler(IAppUserRepository appUserRepository, IValidator<GoogleLoginRequest> validator, IJwtService jwtService)
+    public GoogleLoginHandler(IAppUserRepository appUserRepository, IValidator<GoogleLoginRequest> validator,
+        IJwtService jwtService)
     {
         _appUserRepository = appUserRepository;
         _validator = validator;
@@ -49,7 +49,7 @@ public class GoogleLoginHandler: IRequestHandler<GoogleLoginRequest, GoogleLogin
             var id = await _appUserRepository.CreateUserAsync(appUser, cancellationToken);
             user = appUser;
         }
-        
+
         var refreshTokenSet = _jwtService.GenerateRefreshToken(user);
         await _appUserRepository.SetRefreshTokenAsync(user.Id, refreshTokenSet.refreshToken, refreshTokenSet.expiriesAt,
             cancellationToken);
@@ -58,6 +58,5 @@ public class GoogleLoginHandler: IRequestHandler<GoogleLoginRequest, GoogleLogin
             AccessToken = _jwtService.GenerateAccessToken(user),
             RefreshToken = refreshTokenSet.refreshToken
         };
-
     }
 }

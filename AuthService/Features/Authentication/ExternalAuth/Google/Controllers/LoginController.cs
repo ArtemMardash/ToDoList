@@ -39,9 +39,9 @@ public static class LoginController
             .WithName("GoogleCallback")
             .WithTags("Google")
             .WithOpenApi();
-    
 
-    app.MapGet("/api/auth/google/login",
+
+        app.MapGet("/api/auth/google/login",
                 async (HttpContext context) =>
                 {
                     var props = new AuthenticationProperties

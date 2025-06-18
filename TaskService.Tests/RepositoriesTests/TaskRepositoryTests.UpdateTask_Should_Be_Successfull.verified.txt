@@ -1,0 +1,13 @@
+﻿{
+  Id: Guid_1,
+  UserId: Guid_2,
+  Name: New super name,
+  Description: New super description,
+  Category: {
+    Id: Guid_3,
+    Name: Sport,
+    Description: Something involved exercising
+  },
+  Deadline: DateTime_1,
+  TaskStatus: 2
+}

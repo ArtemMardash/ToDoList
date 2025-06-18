@@ -19,11 +19,11 @@ public interface ICategoryRepository
     /// Get category by name
     /// </summary>
     public Task<Category> GetCategoryByNameAsync(string name, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Update category
     /// </summary>
-    public Task UpdateCategoryAsync(Guid id, string? name, string? description, CancellationToken cancellationToken);
+    public Task UpdateCategoryAsync(Category category, CancellationToken cancellationToken);
 
     /// <summary>
     /// Delete category

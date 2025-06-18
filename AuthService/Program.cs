@@ -59,6 +59,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHsts();
 app.UseHttpsRedirection();
+
+
 app.RegisterUser();
 app.LoginUser();
 app.RefreshToken();

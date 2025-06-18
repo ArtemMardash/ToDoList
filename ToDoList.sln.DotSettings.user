@@ -8,6 +8,7 @@
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.LoginTests.LoginAppUserTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.PersistenceTests.PersistenceAppUserTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.RefreshTokenTests.RefreshTokenAppUserTests.Refresh_User_Token_Should_Fail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Create_Task_Should_Success&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6256e5bc_002D7e7c_002D4806_002D9157_002D50f1016811ad/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Generate_Access_Token_Should_Success" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -17,6 +18,27 @@
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.RegisterTests.RegisterAppUserTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.LoginTests.LoginAppUserTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::688342C8-0369-4F11-AD5A-09B402D1B0DC::net8.0::AuthService.Tests.RefreshTokenTests.RefreshTokenAppUserTests.Refresh_User_Token_Should_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Create_Task_Should_Success&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Create_Task_Should_Fail_Async&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Delete_Task_Should_Be_Successful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.UpdateTask_Should_Be_Successfull&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Get_Task_By_Category_Should_Be_Successful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests.Get_Task_By_Id_Should_Be_Successful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.SubTaskRepositoryTests.Create_Sub_Task_Should_Success_Async&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.SubTaskRepositoryTests.Delete_Task_Should_Be_Successful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.SubTaskRepositoryTests.Get_Sub_Task_By_Id_Should_Be_Successful&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.SubTaskRepositoryTests.Update_Sub_Task_Should_Be_Successfull&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.CategoryRepositoryTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.RepositoriesTests.TaskRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.CategoryUseCaseTests.CategoryUseCaseTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.SubTasksUseCaseTests.SubTaskTests.Update_Subtask_Should_UseCase_Fail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.SubTasksUseCaseTests.SubTaskTests.Update_Subtask_Should_Success_UseCase_Async&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.TaskUseCaseTests.TaskUseCaseTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=882aa4ba_002D8bcb_002D44fd_002D817b_002Db8c607015265/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Get_Subtask_By_Id_Should_Fail" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::9FB0C173-31E0-4342-85B1-68A80F5AE363::net8.0::TaskService.Tests.SubTasksUseCaseTests.SubTaskTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

@@ -52,15 +52,12 @@ namespace TaskService.Migrations
                     b.Property<Guid>("ParentId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("TaskDbId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("TaskStatus")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskDbId");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Subtasks");
                 });
@@ -99,9 +96,13 @@ namespace TaskService.Migrations
 
             modelBuilder.Entity("TaskService.Infrastructure.Persistence.Entities.SubTaskDb", b =>
                 {
-                    b.HasOne("TaskService.Infrastructure.Persistence.Entities.TaskDb", null)
+                    b.HasOne("TaskService.Infrastructure.Persistence.Entities.TaskDb", "Parent")
                         .WithMany("SubTasks")
-                        .HasForeignKey("TaskDbId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("TaskService.Infrastructure.Persistence.Entities.TaskDb", b =>

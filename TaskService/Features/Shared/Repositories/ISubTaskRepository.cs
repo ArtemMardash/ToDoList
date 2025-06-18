@@ -8,15 +8,17 @@ public interface ISubTaskRepository
     /// <summary>
     /// Create subtasks
     /// </summary>
-    public Task<Guid> CreateSubTaskAsync(SubTask subTask, CancellationToken cancellationToken);
+    public Task<Guid> CreateSubTaskAsync(Subtask subtask, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Uodate subTask
+    /// Uodate subtask
     /// </summary>
-    public Task UpdateSubTaskAsync(SubTask subTask, CancellationToken cancellationToken);
-    
+    public Task UpdateSubTaskAsync(Subtask subtask, CancellationToken cancellationToken);
+
     /// <summary>
     /// Delete subTask
     /// </summary>
     public Task DeleteSubTaskAsync(Guid id, CancellationToken cancellationToken);
+
+    public Task<Subtask> GetSubTaskByIdAsync(Guid id, CancellationToken cancellationToken);
 }

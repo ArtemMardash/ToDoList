@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Tests", "AuthSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService", "TaskService\TaskService.csproj", "{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskService.Tests", "TaskService.Tests\TaskService.Tests.csproj", "{9FB0C173-31E0-4342-85B1-68A80F5AE363}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncService", "SyncService\SyncService.csproj", "{27D28F68-23F1-4BB4-9923-E928CE30D6DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +28,14 @@ Global
 		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B18C5A5A-536B-4ABA-A20E-C9108AE7AD85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB0C173-31E0-4342-85B1-68A80F5AE363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB0C173-31E0-4342-85B1-68A80F5AE363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB0C173-31E0-4342-85B1-68A80F5AE363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB0C173-31E0-4342-85B1-68A80F5AE363}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D28F68-23F1-4BB4-9923-E928CE30D6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D28F68-23F1-4BB4-9923-E928CE30D6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D28F68-23F1-4BB4-9923-E928CE30D6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D28F68-23F1-4BB4-9923-E928CE30D6DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

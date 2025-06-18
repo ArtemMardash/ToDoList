@@ -1,6 +1,6 @@
 namespace TaskService.Features.Shared.Interfaces;
 
-public interface IUnitOfWork: IDisposable
+public interface IUnitOfWork : IDisposable
 {
     /// <summary>
     /// Method to save async 

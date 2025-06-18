@@ -1,0 +1,18 @@
+﻿{
+  Id: Guid_1,
+  Name: SubTaskName,
+  TaskStatus: New,
+  Parent: {
+    Id: Guid_2,
+    UserId: Guid_3,
+    Name: PushUps,
+    Description: Do 20 push ups,
+    Deadline: DateTime_1,
+    TaskStatus: New,
+    Category: {
+      Id: Guid_4,
+      Name: Sport,
+      Description: Something involved exercising
+    }
+  }
+}

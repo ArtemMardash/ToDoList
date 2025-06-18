@@ -1,9 +1,8 @@
-
 using TaskService.Core.Enums;
 
 namespace TaskService.Core.Entities;
 
-public class SubTask
+public class Subtask
 {
     /// <summary>
     /// Id of sub task
@@ -11,14 +10,14 @@ public class SubTask
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Name of sub task
+    /// Name of subtask
     /// </summary>
     public string Name { get; set; }
-    
+
     /// <summary>
     /// Status of subtask
     /// </summary>
-    public TaskAndSubTaskStatus TaskStatus { get; set; }
+    public TaskAndSubtaskStatus TaskStatus { get; set; }
 
     /// <summary>
     /// Original task 
@@ -28,7 +27,7 @@ public class SubTask
     /// <summary>
     /// Constructor for mapping
     /// </summary>
-    public SubTask(Guid id, string name, TaskAndSubTaskStatus taskStatus, ToDoTask parent)
+    public Subtask(Guid id, string name, TaskAndSubtaskStatus taskStatus, ToDoTask parent)
     {
         Id = id;
         Name = name;
@@ -39,7 +38,7 @@ public class SubTask
     /// <summary>
     /// Constructor for creating
     /// </summary>
-    public SubTask(string name, TaskAndSubTaskStatus taskStatus, ToDoTask parent)
+    public Subtask(string name, TaskAndSubtaskStatus taskStatus, ToDoTask parent)
     {
         Id = Guid.NewGuid();
         Name = name;

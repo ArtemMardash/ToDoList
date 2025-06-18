@@ -1,0 +1,5 @@
+﻿{
+  Id: Guid_1,
+  Name: newcategory,
+  Description: Descrption of new category
+}

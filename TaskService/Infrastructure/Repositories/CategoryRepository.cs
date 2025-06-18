@@ -1,33 +1,78 @@
+using Microsoft.EntityFrameworkCore;
 using TaskService.Core.Entities;
+using TaskService.Features;
 using TaskService.Features.Shared.Repositories;
+using TaskService.Infrastructure.Mapping;
+using TaskService.Infrastructure.Persistence.Entities;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskService.Infrastructure.Repositories;
 
-public class CategoryRepository: ICategoryRepository
+public class CategoryRepository : ICategoryRepository
 {
-    public Task<Guid> CreateCategoryAsync(Category category, CancellationToken cancellationToken)
+    private readonly TaskDbContext _dbContext;
+
+    public CategoryRepository(TaskDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task<Category> GetCategoryByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Guid> CreateCategoryAsync(Category category, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        category.Name = category.Name.ToLower();
+        await _dbContext.Categories.AddAsync(category.ToDb(), cancellationToken);
+        return category.Id;
     }
 
-    public Task<Category> GetCategoryByNameAsync(string name, CancellationToken cancellationToken)
+    public async Task<Category> GetCategoryByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var categoryDb = await _dbContext.Categories.FindAsync(id, cancellationToken);
+        if (categoryDb == null)
+        {
+            throw new InvalidOperationException("There is no category with such id");
+        }
+
+        return categoryDb.ToDomain();
     }
 
-    public Task UpdateCategoryAsync(Guid id, string? name, string? description, CancellationToken cancellationToken)
+    public async Task<Category> GetCategoryByNameAsync(string name, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new InvalidOperationException("The name cannot be empty");
+        }
+
+        name = name.ToLower();
+        var categoryDb = await _dbContext.Categories.FirstOrDefaultAsync(
+            c => c.Name == name, cancellationToken);
+        if (categoryDb == null)
+        {
+            throw new InvalidOperationException("There is no category with such name");
+        }
+
+        return categoryDb.ToDomain();
     }
 
-    public Task DeleteCategoryAsync(Guid id, CancellationToken cancellationToken)
+    public async Task UpdateCategoryAsync(Category category, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var categoryDb = await _dbContext.Categories.FindAsync(category.Id, cancellationToken);
+        if (categoryDb == null)
+        {
+            throw new InvalidOperationException("There is no category with such Id");
+        }
+
+        categoryDb.Name = category.Name.ToLower();
+        categoryDb.Description = category.Description;
+    }
+
+    public async Task DeleteCategoryAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var categoryDb = await _dbContext.Categories.FindAsync(id, cancellationToken);
+        if (categoryDb == null)
+        {
+            throw new InvalidOperationException("There is no category with such Id");
+        }
+
+        _dbContext.Categories.Remove(categoryDb);
     }
 }

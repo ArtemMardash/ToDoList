@@ -14,12 +14,12 @@ public interface ITaskRepository
     /// Get task by id
     /// </summary>
     public Task<ToDoTask> GetTaskByIdAsync(Guid id, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Update task
     /// </summary>
     public Task UpdateTaskAsync(ToDoTask task, CancellationToken cancellationToken);
-    
+
 
     /// <summary>
     /// Get all tasks by category
@@ -30,5 +30,4 @@ public interface ITaskRepository
     /// Delete ToDoTask
     /// </summary>
     public Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken);
-    
 }
