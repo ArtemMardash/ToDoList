@@ -1,4 +1,5 @@
 using AuthService.Core.ValueObjects;
+using AuthService.Infrastructure.Extensions;
 
 namespace AuthService.Core.Entities;
 
@@ -31,8 +32,8 @@ public class AppUser
     public AppUser(Guid id, string email, string password, FullName fullName)
     {
         Id = id;
-        Email = email;
-        Password = password;
+        Email = email.IsValidEmail() ? email : throw new InvalidOperationException("Invalid email");
+        SetPassword(password);
         FullName = fullName;
     }
 
@@ -42,8 +43,20 @@ public class AppUser
     public AppUser(string email, string password, FullName fullName)
     {
         Id = Guid.NewGuid();
-        Email = email;
+        Email = email.IsValidEmail() ? email : throw new InvalidOperationException("Invalid email");
         Password = password;
         FullName = fullName;
+    }
+
+    public void SetPassword(string pass)
+    {
+        if (string.IsNullOrWhiteSpace(pass))
+        {
+            throw new InvalidOperationException("The password can not be empty");
+        }
+        else
+        {
+            Password = pass;
+        }
     }
 }

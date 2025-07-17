@@ -1,4 +1,5 @@
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskService.Features.Shared.Interfaces;
@@ -25,10 +26,30 @@ public static class DependencyInjection
                 builder => builder.MigrationsAssembly(typeof(TaskDbContext).Assembly.GetName().Name));
         });
     }
-
-    public static void AddInfrastructure(this IServiceCollection services)
+    
+    public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Transient; });
-        services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+        var rabbitMqSection = configuration.GetSection("RabbitMq") ??
+                              throw new InvalidOperationException("There is no section RabbitMq");
+        var rabbitHost = rabbitMqSection["Host"] ??
+                         throw new InvalidOperationException("There is no rabbit host");
+        var login = rabbitMqSection["Login"] ??
+                    throw new InvalidOperationException("There is no login in rabbit mq");
+        var password = rabbitMqSection["Password"] ??
+                       throw new InvalidOperationException("There is no password in rabbit mq");
+        services.AddScoped<IBrokerPublisher, BrokerPublisher>();
+        services.AddMassTransit(x =>
+        {
+            x.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host($"rabbitmq://{rabbitHost}", host =>
+                {
+                    host.Username(login);
+                    host.Password(password);
+                });
+                cfg.ConfigureEndpoints(ctx);
+            });
+        });
+        return services;
     }
 }

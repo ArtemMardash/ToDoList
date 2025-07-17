@@ -14,7 +14,7 @@ public class SyncDbContext: DbContext
     
     public SyncDbContext(DbContextOptions options): base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

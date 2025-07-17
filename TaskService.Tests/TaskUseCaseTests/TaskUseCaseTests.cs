@@ -17,7 +17,7 @@ using TaskService.Infrastructure;
 
 namespace TaskService.Tests.TaskUseCaseTests;
 
-public class TaskUseCaseTests
+public class TaskUseCaseTests: IDisposable
 {
     private readonly ITaskRepository _taskRepository;
     private readonly TaskDbContext _dbContext;
@@ -213,5 +213,11 @@ public class TaskUseCaseTests
         var test = async () => await _mediator.Send(request, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

@@ -5,6 +5,9 @@ namespace TaskService.Core.Entities;
 
 public class ToDoTask
 {
+    private const int NAME_MAX_LENGTH = 30;
+
+    
     /// <summary>
     /// Id of task
     /// </summary>
@@ -52,11 +55,11 @@ public class ToDoTask
         TaskAndSubtaskStatus taskStatus, List<Subtask>? subTasks)
     {
         Id = Guid.NewGuid();
+        SetName(name);
         UserId = userId;
-        Name = name;
-        Description = description;
+        SetDescription(description);
         Category = category;
-        Deadline = deadline;
+        SetDeadLine(deadline);
         TaskStatus = taskStatus;
         SubTasks = subTasks ?? new List<Subtask>();
     }
@@ -68,12 +71,57 @@ public class ToDoTask
         TaskAndSubtaskStatus taskStatus, List<Subtask>? subTasks)
     {
         Id = id;
-        Name = name;
+        SetName(name);
         UserId = userId;
-        Description = description;
+        SetDescription(description);
         Category = category;
-        Deadline = deadline;
+        SetDeadLine(deadline);
         TaskStatus = taskStatus;
         SubTasks = subTasks ?? new List<Subtask>();
+    }
+    
+    /// <summary>
+    /// Method to set name
+    /// </summary>
+    private void SetName(string input)
+    {
+        if (input.Length > NAME_MAX_LENGTH || string.IsNullOrEmpty(input))
+        {
+            throw new InvalidOperationException("Invalid name of the ToDo task");
+        }
+        else
+        {
+            Name = input;
+        }
+    }
+
+    /// <summary>
+    /// Method to set description
+    /// </summary>
+    private void SetDescription(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            throw new InvalidOperationException("Invalid description of the ToDo task");
+        }
+        else
+        {
+            Description = input;
+        }
+    }
+
+    /// <summary>
+    /// Method to set deadline
+    /// </summary>
+    private void SetDeadLine(DateTime input)
+    {
+        if (input.Date <= DateTime.Now)
+        {
+            throw new InvalidOperationException("The date can not be now or in the past");
+        }
+        else
+        {
+            Deadline = input;
+        }
     }
 }

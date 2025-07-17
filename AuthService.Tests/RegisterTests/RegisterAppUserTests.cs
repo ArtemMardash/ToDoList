@@ -6,7 +6,7 @@ using Mediator;
 
 namespace AuthService.Tests.RegisterTests;
 
-public class RegisterAppUserTests
+public class RegisterAppUserTests: IDisposable
 {
     private IAppUserRepository _appUserRepository;
     private AuthDbContext _dbContext;
@@ -53,5 +53,11 @@ public class RegisterAppUserTests
         var test = async () => await _mediator.Send(registerRequest, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

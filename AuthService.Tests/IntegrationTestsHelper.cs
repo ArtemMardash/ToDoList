@@ -72,7 +72,8 @@ public class IntegrationTestsHelper
                 };
             });
 
-        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Transient; });
+        services.AddRabbitMq(configuration);
+        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Scoped; });
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         var scope = builder.Build().Services.CreateScope();
@@ -109,4 +110,5 @@ public class IntegrationTestsHelper
     {
         context.Database.Migrate();
     }
+    
 }

@@ -1,4 +1,5 @@
 using System.Text;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -40,7 +41,9 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddInfrastructure();
+builder.Services.AddRabbitMq(builder.Configuration);
+builder.Services.AddMediator(opt=>opt.ServiceLifetime = ServiceLifetime.Scoped);
+builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
 var jwtConfig = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtConfig["Key"]!);

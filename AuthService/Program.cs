@@ -5,6 +5,7 @@ using AuthService.Infrastructure.Extensions;
 using AuthService.Features.Authentication.Register.Controllers;
 using AuthService.Features.Authentication.Shared.Settings;
 using AuthService.Infrastructure.Persistence;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -44,7 +45,9 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddInfrastructure();
+builder.Services.AddMediator(options=> options.ServiceLifetime = ServiceLifetime.Scoped);
+builder.Services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+builder.Services.AddRabbitMq(builder.Configuration);
 builder.Services.AddJwt(builder.Configuration);
 
 var app = builder.Build();

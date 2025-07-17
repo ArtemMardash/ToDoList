@@ -1,6 +1,6 @@
 namespace TaskService.Infrastructure.Persistence.Entities;
 
-public class TaskDb
+public class TaskDb: BaseEntity
 {
     /// <summary>
     /// Id of task

@@ -7,7 +7,7 @@ using Mediator;
 
 namespace AuthService.Tests.LoginTests;
 
-public class LoginAppUserTests
+public class LoginAppUserTests: IDisposable
 {
     private IAppUserRepository _appUserRepository;
     private AuthDbContext _dbContext;
@@ -58,5 +58,11 @@ public class LoginAppUserTests
         var test = async () => await _mediator.Send(loginRequest, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

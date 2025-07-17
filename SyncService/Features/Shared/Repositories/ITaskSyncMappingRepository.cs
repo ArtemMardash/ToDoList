@@ -1,0 +1,21 @@
+using SyncService.Core.Entities;
+
+namespace SyncService.Features.Shared.Repositories;
+
+public interface ITaskSyncMappingRepository
+{
+    /// <summary>
+    /// Method to add new task sync mapping
+    /// </summary>
+    public Task<Guid> AddTaskSyncMappingAsync(TaskSyncMapping taskSyncMapping, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Method to delete task sync mapping
+    /// </summary>
+    public Task DeleteTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Method to get task sync mapping
+    /// </summary>
+    public Task<TaskSyncMapping> GetTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken);
+}

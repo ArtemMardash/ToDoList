@@ -29,6 +29,7 @@ public class SubTaskRepositoryTests : IDisposable
     public void Dispose()
     {
         _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 
     [Fact]

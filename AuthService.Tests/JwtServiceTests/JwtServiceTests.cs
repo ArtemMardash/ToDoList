@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Tests.JwtServiceTests;
 
-public class JwtServiceTests
+public class JwtServiceTests: IDisposable
 {
     private readonly IntegrationTestsHelper _integrationTestsHelper = new IntegrationTestsHelper();
     private IAppUserRepository _repository;
@@ -43,5 +43,11 @@ public class JwtServiceTests
         var claims = _jwtService.ValidateToken(token.refreshToken, true);
 
         Verify(claims);
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

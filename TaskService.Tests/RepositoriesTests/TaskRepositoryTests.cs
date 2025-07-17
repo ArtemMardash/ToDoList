@@ -25,6 +25,7 @@ public class TaskRepositoryTests : IDisposable
     public void Dispose()
     {
         _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 
     [Fact]

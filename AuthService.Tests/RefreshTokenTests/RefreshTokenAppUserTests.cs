@@ -8,7 +8,7 @@ using Mediator;
 
 namespace AuthService.Tests.RefreshTokenTests;
 
-public class RefreshTokenAppUserTests
+public class RefreshTokenAppUserTests: IDisposable
 {
     private IAppUserRepository _appUserRepository;
     private AuthDbContext _dbContext;
@@ -65,5 +65,11 @@ public class RefreshTokenAppUserTests
         var test = async () => await _mediator.Send(refreshTokenRequest, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

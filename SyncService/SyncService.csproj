@@ -8,11 +8,11 @@
 
     <ItemGroup>
         <PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3746" />
-        <PackageReference Include="MassTransit" Version="8.4.1" />
+        <PackageReference Include="MassTransit" Version="8.5.0" />
         <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -21,10 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="BackgroundJobs\" />
-      <Folder Include="Features\Shared\Repositories\" />
-      <Folder Include="Infrastructure\Extensions\" />
-      <Folder Include="Infrastructure\Persistence\Repositories\" />
+      <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

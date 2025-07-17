@@ -1,6 +1,9 @@
+using System.Globalization;
+using System.Net.NetworkInformation;
 using Microsoft.EntityFrameworkCore;
 using TaskService.Core.Entities;
 using TaskService.Core.Enums;
+using TaskService.Core.Events;
 using TaskService.Features;
 using TaskService.Features.Shared.Repositories;
 using TaskService.Infrastructure.Mapping;
@@ -18,12 +21,30 @@ public class TaskRepository : ITaskRepository
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Method to create task + add to domain event
+    /// </summary>
     public async Task<Guid> CreateTaskAsync(ToDoTask task, CancellationToken cancellationToken)
     {
-        await _dbContext.Tasks.AddAsync(task.ToDb(), cancellationToken);
+        var taskDb = task.ToDb();      
+        var taskCreated = new TaskCreated
+        {
+            Id = task.Id,
+            UserId = task.UserId,
+            Name = task.Name,
+            Description = task.Description,
+            Deadline = task.Deadline,
+        };
+        taskDb.DomainEvents.Add(taskCreated);
+        
+        await _dbContext.Tasks.AddAsync(taskDb, cancellationToken);
+        
         return task.Id;
     }
 
+    /// <summary>
+    /// Method to get task by id
+    /// </summary>
     public async Task<ToDoTask> GetTaskByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var task = await _dbContext.Tasks
@@ -39,6 +60,9 @@ public class TaskRepository : ITaskRepository
         return task.ToDomain();
     }
 
+    /// <summary>
+    /// Method to update task + add it to domain events
+    /// </summary>
     public async Task UpdateTaskAsync(ToDoTask task, CancellationToken cancellationToken)
     {
         var taskDb = await _dbContext.Tasks
@@ -76,8 +100,8 @@ public class TaskRepository : ITaskRepository
         var categoryDb = await _dbContext.Categories.FirstOrDefaultAsync(
             c => c.Id == task.Category.Id || c.Name.ToLower() == task.Category.Name.ToLower(),
             cancellationToken);
-
-
+        
+        
         taskDb.TaskStatus = (int)task.TaskStatus;
         taskDb.Description = task.Description;
         taskDb.Deadline = task.Deadline;
@@ -88,8 +112,22 @@ public class TaskRepository : ITaskRepository
             Description = task.Category.Description
         };
         taskDb.Name = task.Name;
+
+        var taskUpdated = new TaskUpdated
+        {
+            Id = taskDb.Id,
+            UserId = taskDb.UserId,
+            Name = taskDb.Name,
+            Description = taskDb.Description,
+            Deadline = taskDb.Deadline,
+        };
+        
+        taskDb.DomainEvents.Add(taskUpdated);
     }
 
+    /// <summary>
+    /// Method to get all tasks by category
+    /// </summary>
     public Task<List<ToDoTask>> GetTasksByCategoryAsync(Guid categoryId, CancellationToken cancellationToken)
     {
         return _dbContext.Tasks
@@ -100,6 +138,9 @@ public class TaskRepository : ITaskRepository
             .ToListAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Method to delete task + add to domain events
+    /// </summary>
     public async Task DeleteTaskAsync(Guid id, CancellationToken cancellationToken)
     {
         var taskDb = await _dbContext.Tasks.FindAsync(id, cancellationToken);
@@ -107,6 +148,13 @@ public class TaskRepository : ITaskRepository
         {
             throw new InvalidOperationException("There is no task with such id");
         }
+        
+        var taskDeleted = new TaskDeleted
+        {
+            Id = taskDb.Id,
+            UserId = taskDb.UserId,
+        };
+        taskDb.DomainEvents.Add(taskDeleted);
 
         _dbContext.Tasks.Remove(taskDb);
     }

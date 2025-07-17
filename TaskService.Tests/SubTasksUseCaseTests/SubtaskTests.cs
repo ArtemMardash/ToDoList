@@ -15,7 +15,7 @@ using TaskService.Infrastructure;
 
 namespace TaskService.Tests.SubTasksUseCaseTests;
 
-public class SubtaskTests
+public class SubtaskTests: IDisposable
 {
     private readonly ISubTaskRepository _subTaskRepository;
     private readonly ITaskRepository _taskRepository;
@@ -154,5 +154,11 @@ public class SubtaskTests
         var test = async () => await _mediator.Send(request, CancellationToken.None);
 
         await test.Should().ThrowAsync<Exception>();
+    }
+
+    public void Dispose()
+    {
+        _dbContext.Database.EnsureDeleted();
+        _dbContext.Dispose();
     }
 }

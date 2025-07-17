@@ -14,7 +14,6 @@ using TaskService.Infrastructure.Extensions;
 using TaskService.Infrastructure.Persistence;
 using TaskService.Infrastructure.Persistence.Entities;
 using TaskService.Infrastructure.Repositories;
-using IConfiguration = Castle.Core.Configuration.IConfiguration;
 
 namespace TaskService.Tests;
 
@@ -26,6 +25,7 @@ public class IntegrationTestsHelper
     public IntegrationTestsHelper()
     {
         var builder = WebApplication.CreateBuilder();
+        var config = GetConfiguration();
         var services = builder.Services;
 
 
@@ -42,13 +42,23 @@ public class IntegrationTestsHelper
         services.AddScoped<ISubTaskRepository, SubTaskRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Transient; });
+        services.AddRabbitMq(config);
+        services.AddMediator(options => { options.ServiceLifetime = ServiceLifetime.Scoped; });
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
         var scope = builder.Build().Services.CreateScope();
 
         _serviceProvider = scope.ServiceProvider;
+    }
+    
+    private IConfiguration GetConfiguration()
+    {
+        var fileName = "appsettings.json";
+        var config = new ConfigurationBuilder()
+            .AddJsonFile(fileName)
+            .AddEnvironmentVariables()
+            .Build();
+        return config;
     }
 
 

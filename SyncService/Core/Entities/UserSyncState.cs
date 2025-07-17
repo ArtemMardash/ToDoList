@@ -2,14 +2,29 @@ namespace SyncService.Core.Entities;
 
 public class UserSyncState
 {
+    /// <summary>
+    /// Id of UserSync State
+    /// </summary>
     public Guid Id { get; set; }
 
+    /// <summary>
+    /// Id og user
+    /// </summary>
     public Guid UserId { get; set; }
 
+    /// <summary>
+    /// Access token from Google
+    /// </summary>
     public string GoogleAccessToken { get; set; }
 
+    /// <summary>
+    /// Refresh token from google
+    /// </summary>
     public string GoogleRefreshToken { get; set; }
 
+    /// <summary>
+    /// Expiry date of token
+    /// </summary>
     public DateTime TokenExpiry { get; set; }
 
     public UserSyncState(Guid id, Guid userId, string googleAccessToken, string googleRefreshToken,

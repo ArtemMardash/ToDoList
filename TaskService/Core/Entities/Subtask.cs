@@ -4,6 +4,8 @@ namespace TaskService.Core.Entities;
 
 public class Subtask
 {
+    private const int NAME_MAX_LENGTH = 30;
+    
     /// <summary>
     /// Id of sub task
     /// </summary>
@@ -41,8 +43,20 @@ public class Subtask
     public Subtask(string name, TaskAndSubtaskStatus taskStatus, ToDoTask parent)
     {
         Id = Guid.NewGuid();
-        Name = name;
+        SetName(name);
         TaskStatus = taskStatus;
         Parent = parent;
+    }
+    
+    private void SetName(string input)
+    {
+        if (input.Length > NAME_MAX_LENGTH || string.IsNullOrEmpty(input))
+        {
+            throw new InvalidOperationException("Invalid name of the category");
+        }
+        else
+        {
+            Name = input;
+        }
     }
 }
