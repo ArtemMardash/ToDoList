@@ -20,6 +20,7 @@ public class TaskDeletedUseCase: ITaskDeletedUseCase
     {
         try
         {
+            //тут удалить через google caledare
             //ToDO Delete from google calendare
            await _taskSyncMappingRepository.GetTaskSyncMappingAsync(taskDeleted.Id, cancellationToken);
            await _taskSyncMappingRepository.DeleteTaskSyncMappingAsync(taskDeleted.Id, cancellationToken);

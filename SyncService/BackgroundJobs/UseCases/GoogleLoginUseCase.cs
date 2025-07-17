@@ -11,9 +11,9 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
 {
     private readonly IUserSyncStateRepository _userSyncStateRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly GoogleRegistredUseCase _googleRegistredUseCase;
+    private readonly IGoogleRegisterUseCase _googleRegistredUseCase;
 
-    public GoogleLoginUseCase(IUserSyncStateRepository userSyncStateRepository, IUnitOfWork unitOfWork, GoogleRegistredUseCase googleRegistredUseCase)
+    public GoogleLoginUseCase(IUserSyncStateRepository userSyncStateRepository, IUnitOfWork unitOfWork, IGoogleRegisterUseCase googleRegistredUseCase)
     { 
         _userSyncStateRepository = userSyncStateRepository;
         _unitOfWork = unitOfWork;

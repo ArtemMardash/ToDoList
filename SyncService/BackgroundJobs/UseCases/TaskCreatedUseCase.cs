@@ -26,6 +26,7 @@ public class TaskCreatedUseCase: ITaskCreatedUseCase
         }
         catch (InvalidOperationException ex)
         {
+            //Тут должен быть вызван google calendar И создаться task внутри каледаря
             //ToDo Add to google Calendare and create new TaskSyncMapping
             Console.WriteLine("Created Task Sync Mapping");
             var taskSyncMapping = new TaskSyncMapping(taskCreated.Id, taskCreated.Description);
