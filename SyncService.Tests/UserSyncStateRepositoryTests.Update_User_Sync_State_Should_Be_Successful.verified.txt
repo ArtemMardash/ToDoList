@@ -1,0 +1,7 @@
+﻿{
+  Id: Guid_1,
+  UserId: Guid_2,
+  GoogleAccessToken: updated access token,
+  GoogleRefreshToken: updated refresh token,
+  TokenExpiry: DateTime_1
+}
