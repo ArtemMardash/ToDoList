@@ -4,7 +4,7 @@ using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
 
-namespace SyncService.BackgroundJobs.UseCases;
+namespace SyncService.BackgroundJobs.UseCases.GoogleUseCases;
 
 public class GoogleRegistredUseCase: IGoogleRegisterUseCase
 {
@@ -32,7 +32,7 @@ public class GoogleRegistredUseCase: IGoogleRegisterUseCase
         {
             var userSyncState = await _userSyncStateRepository.AddUserSyncStateAsync(
                 new UserSyncState(googleRegistered.UserId, googleRegistered.GoogleAccessToken,
-                    googleRegistered.GoogleRefreshToken, googleRegistered.TokenExpiry), cancellationToken);
+                    googleRegistered.GoogleRefreshToken,googleRegistered.GoogleId, googleRegistered.TokenExpiry), cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

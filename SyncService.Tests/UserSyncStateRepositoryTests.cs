@@ -34,6 +34,7 @@ public class UserSyncStateRepositoryTests: IDisposable
         var userSyncState = new UserSyncState(Guid.NewGuid(), 
             "another access token", 
             "another refresh token",
+            "google id",
             DateTime.UtcNow.AddDays(3));
         var id = await _userSyncRepository.AddUserSyncStateAsync(userSyncState, CancellationToken.None);
         await _dbContext.SaveChangesAsync(CancellationToken.None);

@@ -9,6 +9,8 @@ public class UserSyncStateDb
     public string GoogleAccessToken { get; set; }
 
     public string GoogleRefreshToken { get; set; }
+    
+    public string GoogleId { get; set; }
 
     public DateTime TokenExpiry { get; set; }
 }

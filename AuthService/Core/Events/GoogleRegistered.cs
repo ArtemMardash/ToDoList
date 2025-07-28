@@ -10,9 +10,11 @@ public class GoogleRegistered
     /// </summary>
     public Guid Id { get; set; }
     
-    public string RefreshToken { get; set; }
+    public string GoogleId { get; set; }
     
-    public string AccessToken { get; set; }
+    public string GoogleRefreshToken { get; set; }
+    
+    public string GoogleAccessToken { get; set; }
     
     public DateTime TokenExpiry { get; set; }
 }

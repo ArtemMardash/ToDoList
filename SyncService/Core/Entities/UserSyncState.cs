@@ -11,6 +11,8 @@ public class UserSyncState
     /// Id og user
     /// </summary>
     public Guid UserId { get; set; }
+    
+    public string GoogleId { get; set; }
 
     /// <summary>
     /// Access token from Google
@@ -27,8 +29,7 @@ public class UserSyncState
     /// </summary>
     public DateTime TokenExpiry { get; set; }
 
-    public UserSyncState(Guid id, Guid userId, string googleAccessToken, string googleRefreshToken,
-        DateTime tokenExpiry)
+    public UserSyncState(Guid id, Guid userId, string googleAccessToken, string googleRefreshToken, string googleId ,DateTime tokenExpiry)
     {
         Id = id;
         UserId = userId;
@@ -41,9 +42,10 @@ public class UserSyncState
         TokenExpiry = tokenExpiry > DateTime.UtcNow
             ? tokenExpiry
             : throw new ArgumentException("token expiry should be extended", nameof(tokenExpiry));
+        GoogleId = googleId;
     }
 
-    public UserSyncState(Guid userId, string googleAccessToken, string googleRefreshToken, DateTime tokenExpiry)
+    public UserSyncState(Guid userId, string googleAccessToken, string googleRefreshToken,string googleId ,DateTime tokenExpiry)
     {
         Id = Guid.NewGuid();
         UserId = userId;
@@ -56,5 +58,6 @@ public class UserSyncState
         TokenExpiry = tokenExpiry > DateTime.UtcNow
             ? tokenExpiry
             : throw new ArgumentException("token expiry should be extended", nameof(tokenExpiry));
+        GoogleId = googleId;
     }
 }

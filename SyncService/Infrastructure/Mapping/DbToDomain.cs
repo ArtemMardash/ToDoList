@@ -17,6 +17,7 @@ public static class DbToDomain
             userSyncStateDb.UserId, 
             userSyncStateDb.GoogleAccessToken,
             userSyncStateDb.GoogleRefreshToken,
+            userSyncStateDb.GoogleId,
             userSyncStateDb.TokenExpiry);
     }
 }

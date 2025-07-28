@@ -3,6 +3,8 @@ namespace SharedKernel;
 public interface IGoogleRegistered
 {
     public Guid UserId { get; set; }
+    
+    public string GoogleId { get; set; }
 
     public string GoogleRefreshToken { get; set; }
 

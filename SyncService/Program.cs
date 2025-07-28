@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using SyncService;
 using SyncService.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,23 @@ builder.Services.AddPersistence(builder.Configuration);
 builder.Services
     .AddQueue(builder.Configuration)
     .RegisterBackgroundJob();
+builder.Services.AddAuthentication(opt =>
+    {
+        opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    })
+    .AddCookie(opt =>
+    {
+        opt.Cookie.SameSite = SameSiteMode.Lax;
+        opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    })
+    .AddGoogle(opt =>
+    {
+        opt.ClientId = builder.Configuration.GetSection("GoogleOAuth")["ClientId"];
+        opt.ClientSecret = builder.Configuration.GetSection("GoogleOAuth")["ClientSecret"];
+        opt.CallbackPath = "/signin-google";
+        opt.SaveTokens = true;
+    });
 
 var app = builder.Build();
 
@@ -45,7 +65,10 @@ app.MapGet("/weatherforecast", () =>
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+namespace SyncService
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+    {
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
 }

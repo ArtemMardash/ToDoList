@@ -18,4 +18,11 @@ public interface ITaskSyncMappingRepository
     /// Method to get task sync mapping
     /// </summary>
     public Task<TaskSyncMapping> GetTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Method to ger task sync mapping by calendar Id
+    /// </summary>
+    public Task<TaskSyncMapping> GetTaskSyncMappingByCalendarIdAsync(string calendarId, CancellationToken cancellationToken);
+
+    public Task UpdateCalendarEventIdAsync(Guid taskId, string calendarId, CancellationToken cancellationToken);
 }

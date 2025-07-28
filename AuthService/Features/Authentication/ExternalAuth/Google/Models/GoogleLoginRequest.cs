@@ -5,6 +5,8 @@ namespace AuthService.Features.Authentication.ExternalAuth.Google.Models;
 
 public class GoogleLoginRequest : IRequest<GoogleLoginResult>
 {
+    public string GoogleId { get; set; }
+    
     public string Email { get; set; }
 
     public string? AccessToken { get; set; }

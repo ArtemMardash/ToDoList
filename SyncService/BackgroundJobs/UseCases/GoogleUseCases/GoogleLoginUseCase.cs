@@ -5,7 +5,7 @@ using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
 
-namespace SyncService.BackgroundJobs.UseCases;
+namespace SyncService.BackgroundJobs.UseCases.GoogleUseCases;
 
 public class GoogleLoginUseCase : IGoogleLoginUseCase
 {
@@ -30,6 +30,7 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
                 googleLogin.UserId,
                 googleLogin.AccessToken,
                 googleLogin.RefreshToken,
+                googleLogin.GoogleId,
                 googleLogin.TokenExpiry);
             await _userSyncStateRepository.UpdateUserSyncStateAsync(userToUpdate, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -39,6 +40,7 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
             var dto = new GoogleRegisterDto
             {
                 UserId = googleLogin.UserId,
+                GoogleId = googleLogin.GoogleId,
                 GoogleRefreshToken = googleLogin.RefreshToken,
                 GoogleAccessToken = googleLogin.AccessToken,
                 TokenExpiry = googleLogin.TokenExpiry

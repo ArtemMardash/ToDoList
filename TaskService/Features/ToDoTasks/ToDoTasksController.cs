@@ -13,7 +13,6 @@ public static class ToDoTasksController
     public static void MapToDoTaskEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/api/task")
-            .RequireAuthorization()
             .WithTags("todotask");
 
         group.MapPost("/add",

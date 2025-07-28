@@ -1,13 +1,19 @@
+using Google.Apis.Calendar.v3;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 using SyncService.BackgroundJobs.Interfaces;
 using SyncService.BackgroundJobs.UseCases;
+using SyncService.BackgroundJobs.UseCases.GoogleUseCases;
+using SyncService.BackgroundJobs.UseCases.TaskUseCases;
 using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
 using SyncService.Infrastructure.GoogleAccessConsumers;
 using SyncService.Infrastructure.Persistence;
 using SyncService.Infrastructure.Persistence.Repositories;
+using SyncService.Infrastructure.Services;
+using SyncService.Infrastructure.Services.WebClients;
 using SyncService.Infrastructure.TaskConsumers;
 
 namespace SyncService.Infrastructure.Extensions;
@@ -19,6 +25,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITaskSyncMappingRepository, TaskSyncMappingRepository>();
         services.AddScoped<IUserSyncStateRepository, UserSyncStateRepository>();
+        services.AddScoped<GoogleCalendarService>();
+        services.AddRefitClient<ITaskServiceApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:5232"));
         services.AddDbContext<SyncDbContext>(opt =>
         {
             opt.UseNpgsql(config.GetConnectionString("DefaultConnectionString") ??

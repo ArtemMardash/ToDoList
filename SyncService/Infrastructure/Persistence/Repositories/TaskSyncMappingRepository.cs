@@ -42,4 +42,27 @@ public class TaskSyncMappingRepository: ITaskSyncMappingRepository
 
         return taskSyncDb.ToDomain();
     }
+
+    public async Task<TaskSyncMapping> GetTaskSyncMappingByCalendarIdAsync(string calendarId, CancellationToken cancellationToken)
+    {
+        var taskSyncDb = await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.CalendarEventId == calendarId, cancellationToken);
+        if (taskSyncDb == null)
+        {
+            throw new InvalidOperationException("there is no taskSyncMapping with such calendarEventId");
+        }
+
+        return taskSyncDb.ToDomain();
+    }
+
+    public async Task UpdateCalendarEventIdAsync(Guid taskId, string calendarId, CancellationToken cancellationToken)
+    {
+        var taskSyncMappingDb =
+            await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
+        if (taskSyncMappingDb == null)
+        {
+            throw new InvalidOperationException("there is no taskSyncMapping with such Id");
+        }
+
+        taskSyncMappingDb.CalendarEventId = calendarId;
+    }
 }

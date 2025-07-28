@@ -20,6 +20,7 @@ public static class DomainToDb
         return new UserSyncStateDb
         {
             Id = userSyncState.Id,
+            GoogleId = userSyncState.GoogleId,
             UserId = userSyncState.UserId,
             GoogleAccessToken = userSyncState.GoogleAccessToken,
             GoogleRefreshToken = userSyncState.GoogleRefreshToken,

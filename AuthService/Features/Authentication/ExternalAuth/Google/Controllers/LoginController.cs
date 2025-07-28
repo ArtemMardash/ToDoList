@@ -23,6 +23,7 @@ public static class LoginController
                         var principal = result.Principal;
                         var request = new GoogleLoginRequest
                         {
+                            GoogleId = principal.FindFirstValue(ClaimTypes.NameIdentifier),
                             Email = principal.FindFirstValue(ClaimTypes.Email),
                             AccessToken = null,
                             RefreshToken = null,

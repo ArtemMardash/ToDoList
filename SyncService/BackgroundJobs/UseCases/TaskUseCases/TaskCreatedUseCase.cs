@@ -1,20 +1,25 @@
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
 using SharedKernel;
 using SyncService.BackgroundJobs.Interfaces;
 using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
+using SyncService.Infrastructure.Services;
 
-namespace SyncService.BackgroundJobs.UseCases;
+namespace SyncService.BackgroundJobs.UseCases.TaskUseCases;
 
 public class TaskCreatedUseCase: ITaskCreatedUseCase
 {
     private readonly ITaskSyncMappingRepository _taskSyncMappingRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly GoogleCalendarService _googleCalendarService;
 
-    public TaskCreatedUseCase(ITaskSyncMappingRepository taskSyncMappingRepository, IUnitOfWork unitOfWork)
+    public TaskCreatedUseCase(ITaskSyncMappingRepository taskSyncMappingRepository, IUnitOfWork unitOfWork, GoogleCalendarService googleCalendarService)
     {
         _taskSyncMappingRepository = taskSyncMappingRepository;
         _unitOfWork = unitOfWork;
+        _googleCalendarService = googleCalendarService;
     }
 
     public async Task ExecuteAsync(ITaskCreated taskCreated, CancellationToken cancellationToken)
@@ -26,10 +31,9 @@ public class TaskCreatedUseCase: ITaskCreatedUseCase
         }
         catch (InvalidOperationException ex)
         {
-            //Тут должен быть вызван google calendar И создаться task внутри каледаря
-            //ToDo Add to google Calendare and create new TaskSyncMapping
+            var taskSyncMapping = new TaskSyncMapping(taskCreated.Id, "");
+            await _googleCalendarService.InsertOrUpdateEventAsync(taskSyncMapping, taskCreated.UserId, cancellationToken);
             Console.WriteLine("Created Task Sync Mapping");
-            var taskSyncMapping = new TaskSyncMapping(taskCreated.Id, taskCreated.Description);
             await _taskSyncMappingRepository.AddTaskSyncMappingAsync(taskSyncMapping, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

@@ -19,6 +19,7 @@ public class BrokerPublisher: IBrokerPublisher
         await _publisher.Publish<IGoogleLogin>(new
         {
             UserId = googleLogin.UserId,
+            GoogleId = googleLogin.GoogleId,
             RefreshToken = googleLogin.GoogleRefreshToken,
             AccessToken = googleLogin.GoogleAccessToken,
             TokenExpiry = googleLogin.TokenExpiry
@@ -30,8 +31,9 @@ public class BrokerPublisher: IBrokerPublisher
         await _publisher.Publish<IGoogleRegistered>(new
         {
             UserId = googleRegistered.Id,
-            RefreshToken = googleRegistered.RefreshToken,
-            AccessToken = googleRegistered.AccessToken,
+            GoogleId = googleRegistered.GoogleId,
+            GoogleRefreshToken = googleRegistered.GoogleRefreshToken,
+            GoogleAccessToken = googleRegistered.GoogleAccessToken,
             TokenExpiry = googleRegistered.TokenExpiry
         }, cancellationToken);
     }
