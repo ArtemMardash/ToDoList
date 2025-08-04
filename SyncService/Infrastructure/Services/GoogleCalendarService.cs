@@ -2,6 +2,8 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
+using SharedKernel;
+using SyncService.BackgroundJobs.Dtos;
 using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
@@ -19,9 +21,9 @@ public class GoogleCalendarService
 
     private const string APP_NAME = "authfortodolist";
 
-    public GoogleCalendarService(ITaskServiceApi taskServiceApi, 
+    public GoogleCalendarService(ITaskServiceApi taskServiceApi,
         IUserSyncStateRepository userSyncStateRepository,
-        ITaskSyncMappingRepository taskSyncMappingRepository, 
+        ITaskSyncMappingRepository taskSyncMappingRepository,
         IUnitOfWork unitOfWork)
     {
         _taskServiceApi = taskServiceApi;
@@ -30,27 +32,69 @@ public class GoogleCalendarService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task InsertOrUpdateEventAsync(TaskSyncMapping taskSyncMapping, Guid userId,
+    public Task InsertOrUpdateEventAsync(TaskSyncMapping taskSyncMapping, ITaskCreated taskCreted,
+        CancellationToken cancellationToken)
+    {
+        var taskInfo = new TaskInfo
+        {
+            Id = taskCreted.Id,
+            UserId = taskCreted.UserId,
+            Name = taskCreted.Name,
+            Description = taskCreted.Description,
+            End = taskCreted.Deadline,
+            Start = taskCreted.Start
+        };
+        return InsertOrUpdateEventAsync(taskSyncMapping, taskInfo, cancellationToken);
+    }
+
+    public Task InsertOrUpdateEventAsync(TaskSyncMapping taskSyncMapping, ITaskUpdated taskUpdated,
+        CancellationToken cancellationToken)
+    {
+        var taskInfo = new TaskInfo
+        {
+            Id = taskUpdated.Id,
+            UserId = taskUpdated.UserId,
+            Name = taskUpdated.Name,
+            Description = taskUpdated.Description,
+            End = taskUpdated.Deadline,
+            Start = taskUpdated.Start
+        };
+        return InsertOrUpdateEventAsync(taskSyncMapping, taskInfo, cancellationToken);
+    }
+
+    public async Task DeleteEventAsync(TaskSyncMapping taskSyncMapping, Guid userId,
         CancellationToken cancellationToken)
     {
         var userSyncState = await _userSyncStateRepository.GetUserSyncStateByUserId(userId, cancellationToken);
-        var task = await _taskServiceApi.GetTaskInfo(taskSyncMapping.TaskId);
-        var calendarService = await GetCalendarServiceAsync(userSyncState.GoogleId, cancellationToken);
+        var calendarService = await GetCalendarServiceAsync(userSyncState.GoogleAccessToken, cancellationToken);
+        await calendarService.Events.Delete("primary", taskSyncMapping.CalendarEventId).ExecuteAsync(cancellationToken);
+    }
+
+    private async Task InsertOrUpdateEventAsync(TaskSyncMapping taskSyncMapping, TaskInfo taskInfo,
+        CancellationToken cancellationToken)
+    {
+        var userSyncState = await _userSyncStateRepository.GetUserSyncStateByUserId(taskInfo.UserId, cancellationToken);
+        var calendarService = await GetCalendarServiceAsync(userSyncState.GoogleAccessToken, cancellationToken);
 
         var taskEvent = new Event
         {
-            Summary = task.Name,
-            Description = task.Description,
+            Summary = taskInfo.Name,
+            Description = taskInfo.Description,
             End = new EventDateTime
             {
-                DateTimeDateTimeOffset = task.Deadline,
+                DateTimeDateTimeOffset = taskInfo.End,
+            },
+            Start = new EventDateTime
+            {
+                DateTimeDateTimeOffset = taskInfo.Start
             }
         };
         if (string.IsNullOrEmpty(taskSyncMapping.CalendarEventId))
         {
             var createdEvent =
                 await calendarService.Events.Insert(taskEvent, "primary").ExecuteAsync(cancellationToken);
-            await _taskSyncMappingRepository.UpdateCalendarEventIdAsync(task.Id, createdEvent.Id, cancellationToken);
+            await _taskSyncMappingRepository.UpdateCalendarEventIdAsync(taskInfo.Id, createdEvent.Id,
+                cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
         else
@@ -60,31 +104,14 @@ public class GoogleCalendarService
         }
     }
 
-    public async Task DeleteEventAsync(TaskSyncMapping taskSyncMapping, Guid userId ,CancellationToken cancellationToken)
-    {
-        var userSyncState = await _userSyncStateRepository.GetUserSyncStateByUserId(userId, cancellationToken);
-        var calendarService = await GetCalendarServiceAsync(userSyncState.GoogleId, cancellationToken);
-        await calendarService.Events.Delete("primary", taskSyncMapping.CalendarEventId).ExecuteAsync(cancellationToken);
-    }
-
-    private async Task<CalendarService> GetCalendarServiceAsync(string googleUserId,
+    private async Task<CalendarService> GetCalendarServiceAsync(string googleAccessToken,
         CancellationToken cancellationToken)
     {
-        UserCredential credential;
-        using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+        var initializer = new BaseClientService.Initializer
         {
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.Load(stream).Secrets,
-                _scopes,
-                googleUserId,
-                CancellationToken.None
-            );
-        }
-
-        return new CalendarService(new BaseClientService.Initializer()
-        {
-            HttpClientInitializer = credential,
-            ApplicationName = APP_NAME
-        });
+            HttpClientInitializer = GoogleCredential.FromAccessToken(googleAccessToken),
+            ApplicationName = "ToDoList"
+        };
+        return new CalendarService(initializer);
     }
 }

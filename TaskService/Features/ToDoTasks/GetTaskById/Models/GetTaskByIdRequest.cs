@@ -22,6 +22,8 @@ public class TaskDtoResult
 
     public DateTime Deadline { get; set; }
 
+    public DateTime Start { get; set; }
+    
     public TaskAndSubtaskStatus TaskStatus { get; set; }
 
     public List<SubTaskResult> SubTasks { get; set; } = [];

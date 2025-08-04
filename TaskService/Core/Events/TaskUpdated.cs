@@ -25,7 +25,11 @@ public class TaskUpdated: INotification
     /// Description of the task
     /// </summary>
     public string Description { get; set; }
-
+    
+    /// <summary>
+    /// Starts of the task
+    /// </summary>
+    public DateTime Start { get; set; }
     
     /// <summary>
     /// Deadline of the task

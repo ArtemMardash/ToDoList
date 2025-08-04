@@ -1,8 +1,14 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.EntityFrameworkCore;
 using SyncService;
+using SyncService.BackgroundJobs;
+using SyncService.Features.Shared.Interfaces;
+using SyncService.Features.Shared.Repositories;
 using SyncService.Infrastructure.Extensions;
+using SyncService.Infrastructure.Persistence;
+using Telegram.Bot;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +38,23 @@ builder.Services.AddAuthentication(opt =>
         opt.SaveTokens = true;
     });
 
+builder.Services.AddHostedService<TelegramService>();
+builder.Services.AddHttpClient("telegram_bot_client")
+    .AddTypedClient<ITelegramBotClient>((client, sp) =>
+    {
+        var config = sp.GetRequiredService<IConfiguration>();
+        return new TelegramBotClient(config["Telegram:Token"], client);
+    });
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+
+    var context = service.GetService<SyncDbContext>();
+    context?.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,27 +70,17 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/generate-unigue-code/{userId:guid}", async (Guid userId, ITgLinksRepository tgLinksRepository, IUnitOfWork unitOfWork, CancellationToken cancellationToken) =>
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
+        var tgLink = await tgLinksRepository.GetTgLinkByUserIdAsync(userId, cancellationToken);
+
+        var code = new Random().Next(000000, 999999);
+        tgLink.UniqueCode = code;
+        await tgLinksRepository.UpdateAsync(tgLink, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     })
-    .WithName("GetWeatherForecast")
+    .WithName("GenerateCode")
     .WithOpenApi();
 
 app.Run();
 
-namespace SyncService
-{
-    record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-    {
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
-}

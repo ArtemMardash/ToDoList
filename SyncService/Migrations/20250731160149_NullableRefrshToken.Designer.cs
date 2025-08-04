@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SyncService.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using SyncService.Infrastructure.Persistence;
 namespace SyncService.Migrations
 {
     [DbContext(typeof(SyncDbContext))]
-    partial class SyncDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250731160149_NullableRefrshToken")]
+    partial class NullableRefrshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,26 +41,6 @@ namespace SyncService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TasksSyncMapping");
-                });
-
-            modelBuilder.Entity("SyncService.Infrastructure.Persistence.DbEntities.TgLinksDb", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("TgUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("UniqueCode")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TgLinks");
                 });
 
             modelBuilder.Entity("SyncService.Infrastructure.Persistence.DbEntities.UserSyncStateDb", b =>

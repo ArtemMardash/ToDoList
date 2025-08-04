@@ -21,9 +21,9 @@ public class TaskSyncMappingRepository: ITaskSyncMappingRepository
     }
     
 
-    public async Task DeleteTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken)
+    public async Task DeleteTaskSyncMappingByTaskIdAsync(Guid taskId, CancellationToken cancellationToken)
     {
-        var taskSyncDb = await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+        var taskSyncDb = await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.TaskId == taskId, cancellationToken);
         if (taskSyncDb == null)
         {
             throw new InvalidOperationException("there is no taskSyncMapping with such ID");
@@ -32,9 +32,9 @@ public class TaskSyncMappingRepository: ITaskSyncMappingRepository
         _syncDbContext.TasksSyncMapping.Remove(taskSyncDb);
     }
 
-    public async Task<TaskSyncMapping> GetTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<TaskSyncMapping> GetTaskSyncMappingAsyncByTaskId(Guid taskId, CancellationToken cancellationToken)
     {
-        var taskSyncDb = await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+        var taskSyncDb = await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.TaskId == taskId, cancellationToken);
         if (taskSyncDb == null)
         {
             throw new InvalidOperationException("there is no taskSyncMapping with such ID");
@@ -57,7 +57,7 @@ public class TaskSyncMappingRepository: ITaskSyncMappingRepository
     public async Task UpdateCalendarEventIdAsync(Guid taskId, string calendarId, CancellationToken cancellationToken)
     {
         var taskSyncMappingDb =
-            await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.Id == taskId, cancellationToken);
+            await _syncDbContext.TasksSyncMapping.FirstOrDefaultAsync(t => t.TaskId == taskId, cancellationToken);
         if (taskSyncMappingDb == null)
         {
             throw new InvalidOperationException("there is no taskSyncMapping with such Id");

@@ -22,39 +22,35 @@ public class UserSyncState
     /// <summary>
     /// Refresh token from google
     /// </summary>
-    public string GoogleRefreshToken { get; set; }
+    public string? GoogleRefreshToken { get; set; }
 
     /// <summary>
     /// Expiry date of token
     /// </summary>
     public DateTime TokenExpiry { get; set; }
 
-    public UserSyncState(Guid id, Guid userId, string googleAccessToken, string googleRefreshToken, string googleId ,DateTime tokenExpiry)
+    public UserSyncState(Guid id, Guid userId, string googleAccessToken, string? googleRefreshToken, string googleId ,DateTime tokenExpiry)
     {
         Id = id;
         UserId = userId;
         GoogleAccessToken = string.IsNullOrWhiteSpace(googleAccessToken)
             ? throw new ArgumentException("token can not be empty", nameof(googleAccessToken))
             : googleAccessToken;
-        GoogleRefreshToken = string.IsNullOrWhiteSpace(googleRefreshToken)
-            ? throw new ArgumentException("token can not be empty", nameof(googleRefreshToken))
-            : googleRefreshToken;
+        GoogleRefreshToken = googleRefreshToken;
         TokenExpiry = tokenExpiry > DateTime.UtcNow
             ? tokenExpiry
             : throw new ArgumentException("token expiry should be extended", nameof(tokenExpiry));
         GoogleId = googleId;
     }
 
-    public UserSyncState(Guid userId, string googleAccessToken, string googleRefreshToken,string googleId ,DateTime tokenExpiry)
+    public UserSyncState(Guid userId, string googleAccessToken, string? googleRefreshToken,string googleId ,DateTime tokenExpiry)
     {
         Id = Guid.NewGuid();
         UserId = userId;
         GoogleAccessToken = string.IsNullOrWhiteSpace(googleAccessToken)
             ? throw new ArgumentException("token can not be empty", nameof(googleAccessToken))
             : googleAccessToken;
-        GoogleRefreshToken = string.IsNullOrWhiteSpace(googleRefreshToken)
-            ? throw new ArgumentException("token can not be empty", nameof(googleRefreshToken))
-            : googleRefreshToken;
+        GoogleRefreshToken = googleRefreshToken;
         TokenExpiry = tokenExpiry > DateTime.UtcNow
             ? tokenExpiry
             : throw new ArgumentException("token expiry should be extended", nameof(tokenExpiry));

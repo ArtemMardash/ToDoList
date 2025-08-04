@@ -108,7 +108,12 @@ public static class DependencyInjection
                 opt.ClientId = externalAuthSettings["Google:client_id"];
                 opt.ClientSecret = externalAuthSettings["Google:client_secret"];
                 opt.CallbackPath = "/api/auth/google/callback";
-                opt.SaveTokens = true;
+
+                opt.AccessType = "offline";
+                opt.SaveTokens  = true;
+
+                opt.Scope.Add("https://www.googleapis.com/auth/calendar");
+                opt.Scope.Add("https://www.googleapis.com/auth/calendar.events");
             });
     }
 }

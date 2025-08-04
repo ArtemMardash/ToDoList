@@ -34,7 +34,7 @@ public class TaskSyncMappingRepositoryTests: IDisposable
         var taskSyncMapping = new TaskSyncMapping(Guid.NewGuid(), "Calendar event");
         var id = await _taskSyncMappingRepository.AddTaskSyncMappingAsync(taskSyncMapping, CancellationToken.None);
         await _dbContext.SaveChangesAsync(CancellationToken.None);
-        var taskById = await _taskSyncMappingRepository.GetTaskSyncMappingAsync(id, CancellationToken.None);
+        var taskById = await _taskSyncMappingRepository.GetTaskSyncMappingAsyncByTaskId(id, CancellationToken.None);
         taskById.Should().NotBeNull();
         taskById.CalendarEventId.Should().Be(taskSyncMapping.CalendarEventId);
         taskById.TaskId.Should().Be(taskSyncMapping.TaskId);
@@ -43,7 +43,7 @@ public class TaskSyncMappingRepositoryTests: IDisposable
     [Fact]
     public async Task Get_User_Sync_State_By_Id_Should_Be_Successful()
     {
-        var taskSyncMappingAsync = await _taskSyncMappingRepository.GetTaskSyncMappingAsync(_taskSyncId, CancellationToken.None);
+        var taskSyncMappingAsync = await _taskSyncMappingRepository.GetTaskSyncMappingAsyncByTaskId(_taskSyncId, CancellationToken.None);
 
         await Verify(taskSyncMappingAsync);
     }
@@ -53,7 +53,7 @@ public class TaskSyncMappingRepositoryTests: IDisposable
     [Fact]
     public async Task Delete_User_Sync_State_Should_Be_Successful()
     {
-        await _taskSyncMappingRepository.DeleteTaskSyncMappingAsync(_taskSyncId, CancellationToken.None);
+        await _taskSyncMappingRepository.DeleteTaskSyncMappingByTaskIdAsync(_taskSyncId, CancellationToken.None);
         await _dbContext.SaveChangesAsync(CancellationToken.None);
         _dbContext.UsersSyncState.FirstOrDefault(ts => ts.Id == _taskSyncId).Should().BeNull();
     }

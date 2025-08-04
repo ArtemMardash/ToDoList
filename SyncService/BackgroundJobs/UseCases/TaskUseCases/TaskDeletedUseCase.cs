@@ -24,9 +24,9 @@ public class TaskDeletedUseCase: ITaskDeletedUseCase
     {
         try
         {
-           var taskSyncMapping = await _taskSyncMappingRepository.GetTaskSyncMappingAsync(taskDeleted.Id, cancellationToken);
+           var taskSyncMapping = await _taskSyncMappingRepository.GetTaskSyncMappingAsyncByTaskId(taskDeleted.Id, cancellationToken);
            await _googleCalendarService.DeleteEventAsync(taskSyncMapping, taskDeleted.UserId, cancellationToken);
-           await _taskSyncMappingRepository.DeleteTaskSyncMappingAsync(taskDeleted.Id, cancellationToken);
+           await _taskSyncMappingRepository.DeleteTaskSyncMappingByTaskIdAsync(taskDeleted.Id, cancellationToken);
            await _unitOfWork.SaveChangesAsync(cancellationToken);
            Console.WriteLine("The task was deleted");
         }

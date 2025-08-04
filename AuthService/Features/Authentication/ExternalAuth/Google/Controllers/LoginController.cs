@@ -4,6 +4,7 @@ using Mediator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace AuthService.Features.Authentication.ExternalAuth.Google.Controllers;
 
@@ -21,13 +22,18 @@ public static class LoginController
                     if (result.Succeeded)
                     {
                         var principal = result.Principal;
+                        var accessToken = result.Properties.Items[".Token.access_token"];
+                        _ =
+                            result.Properties.Items.TryGetValue(".Token.refrsh_token", out var refreshToken);
+                        _ = DateTime.TryParse(result.Properties.Items[".Token.expires_at"], out var tokenExpiry);
+                        
                         var request = new GoogleLoginRequest
                         {
                             GoogleId = principal.FindFirstValue(ClaimTypes.NameIdentifier),
                             Email = principal.FindFirstValue(ClaimTypes.Email),
-                            AccessToken = null,
-                            RefreshToken = null,
-                            Expiry = default,
+                            AccessToken = accessToken,
+                            RefreshToken = refreshToken,
+                            Expiry = tokenExpiry,
                             FirstName = principal.FindFirstValue(ClaimTypes.Name),
                             LastName = principal.FindFirstValue(ClaimTypes.Surname)
                         };

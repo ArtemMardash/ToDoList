@@ -20,4 +20,13 @@ public static class DbToDomain
             userSyncStateDb.GoogleId,
             userSyncStateDb.TokenExpiry);
     }
+
+    public static TgLinks ToDomain(this TgLinksDb tgLinksDb)
+    {
+        return new TgLinks(
+            tgLinksDb.Id,
+            tgLinksDb.UserId,
+            tgLinksDb.TgUserId,
+            tgLinksDb.UniqueCode);
+    }
 }

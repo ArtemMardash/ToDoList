@@ -26,6 +26,11 @@ public class TaskDb: BaseEntity
     /// Category of the task
     /// </summary>
     public CategoryDb Category { get; set; }
+    
+    /// <summary>
+    /// Begining of the task
+    /// </summary>
+    public DateTime Start { get; set; }
 
     /// <summary>
     /// Deadline of the task

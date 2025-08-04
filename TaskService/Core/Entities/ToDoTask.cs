@@ -27,6 +27,11 @@ public class ToDoTask
     /// Description of the task
     /// </summary>
     public string Description { get; set; }
+    
+    /// <summary>
+    /// Start date of the task
+    /// </summary>
+    public DateTime Start { get; set; }
 
     /// <summary>
     /// Deadline of the task
@@ -51,7 +56,7 @@ public class ToDoTask
     /// <summary>
     /// Constructor for creation
     /// </summary>
-    public ToDoTask(Guid userId, string name, string description, Category category, DateTime deadline,
+    public ToDoTask(Guid userId, string name, string description, Category category,DateTime start, DateTime deadline,
         TaskAndSubtaskStatus taskStatus, List<Subtask>? subTasks)
     {
         Id = Guid.NewGuid();
@@ -59,6 +64,7 @@ public class ToDoTask
         UserId = userId;
         SetDescription(description);
         Category = category;
+        Start = start;
         SetDeadLine(deadline);
         TaskStatus = taskStatus;
         SubTasks = subTasks ?? new List<Subtask>();
@@ -67,7 +73,7 @@ public class ToDoTask
     /// <summary>
     /// Constructor for mapping
     /// </summary>
-    public ToDoTask(Guid id, Guid userId, string name, string description, Category category, DateTime deadline,
+    public ToDoTask(Guid id, Guid userId, string name, string description, Category category, DateTime start, DateTime deadline,
         TaskAndSubtaskStatus taskStatus, List<Subtask>? subTasks)
     {
         Id = id;
@@ -75,6 +81,7 @@ public class ToDoTask
         UserId = userId;
         SetDescription(description);
         Category = category;
+        Start = start;
         SetDeadLine(deadline);
         TaskStatus = taskStatus;
         SubTasks = subTasks ?? new List<Subtask>();

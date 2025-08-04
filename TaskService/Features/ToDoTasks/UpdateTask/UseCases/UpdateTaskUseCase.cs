@@ -40,7 +40,7 @@ public class UpdateTaskUseCase : IRequestHandler<UpdateTaskRequest>
             category = new Category(request.Category.Name, request.Category.Description);
         }
 
-        var toDoTask = new ToDoTask(request.Id, request.UserId, request.Name, request.Description, category,
+        var toDoTask = new ToDoTask(request.Id, request.UserId, request.Name, request.Description, category, request.Start,
             request.Deadline, request.TaskStatus, new List<Subtask>());
         toDoTask.SubTasks = request.SubTasks.Select(st => ToSubTask(st, toDoTask)).ToList();
         await _taskRepository.UpdateTaskAsync(toDoTask, cancellationToken);

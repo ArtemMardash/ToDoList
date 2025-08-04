@@ -39,7 +39,7 @@ public class AddTaskUseCase : IRequestHandler<AddTaskRequest, AddTaskResult>
             category = new Category(request.Category.Name, request.Category.Description);
         }
 
-        var task = new ToDoTask(request.UserId, request.Name, request.Description, category, request.Deadline,
+        var task = new ToDoTask(request.UserId, request.Name, request.Description, category, request.Start, request.Deadline,
             request.TaskStatus, new List<Subtask>());
         task.SubTasks = request.SubTasks.Select(st => ToSubTask(st, task)).ToList();
         var result = await _taskRepository.CreateTaskAsync(task, cancellationToken);

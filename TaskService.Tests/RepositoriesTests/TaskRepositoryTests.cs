@@ -35,6 +35,7 @@ public class TaskRepositoryTests : IDisposable
             "Pull Ups",
             "Do 10 pull ups",
             new Category("Sport", "Something involved exercising"),
+            DateTime.UtcNow, 
             DateTime.UtcNow.AddDays(7),
             TaskAndSubtaskStatus.New,
             new List<Subtask>());

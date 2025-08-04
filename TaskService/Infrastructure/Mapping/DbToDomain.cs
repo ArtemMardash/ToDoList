@@ -20,6 +20,7 @@ public static class DbToDomain
             taskDb.Name,
             taskDb.Description,
             taskDb.Category.ToDomain(),
+            taskDb.Start,
             taskDb.Deadline,
             taskStatus,
             new List<Subtask>());

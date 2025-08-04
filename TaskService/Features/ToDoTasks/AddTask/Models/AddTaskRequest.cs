@@ -16,6 +16,8 @@ public class AddTaskRequest : IRequest<AddTaskResult>
     public CategoryDto Category { get; set; }
 
     public DateTime Deadline { get; set; }
+    
+    public DateTime Start { get; set; }
 
     public TaskAndSubtaskStatus TaskStatus { get; set; }
 

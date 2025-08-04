@@ -26,4 +26,9 @@ public interface ITaskUpdated
     /// Deadline of the task
     /// </summary>
     public DateTime Deadline { get; set; }
+    
+    /// <summary>
+    /// Start of the task
+    /// </summary>
+    public DateTime Start { get; set; }
 }

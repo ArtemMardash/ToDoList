@@ -69,8 +69,8 @@ public class GoogleLoginHandler : IRequestHandler<GoogleLoginRequest, GoogleLogi
             {
                 Id = user.Id,
                 GoogleId = Guid.NewGuid().ToString(),
-                GoogleRefreshToken = refreshTokenSet.refreshToken,
-                GoogleAccessToken = accessToken,
+                GoogleRefreshToken = request.RefreshToken,
+                GoogleAccessToken = request.AccessToken,
                 TokenExpiry = refreshTokenSet.expiriesAt
             };
             await _brokerPublisher.PublishGoogleRegisteredAsync(googleRegistered, cancellationToken);
@@ -81,8 +81,8 @@ public class GoogleLoginHandler : IRequestHandler<GoogleLoginRequest, GoogleLogi
             {
                 UserId = user.Id,
                 GoogleId = Guid.NewGuid().ToString(),
-                GoogleRefreshToken = refreshTokenSet.refreshToken,
-                GoogleAccessToken = accessToken,
+                GoogleRefreshToken = request.RefreshToken,
+                GoogleAccessToken = request.AccessToken,
                 TokenExpiry = refreshTokenSet.expiriesAt
             };
             await _brokerPublisher.PublishGoogleLoginAsync(googleLogin, cancellationToken);

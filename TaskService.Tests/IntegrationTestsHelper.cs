@@ -76,6 +76,7 @@ public class IntegrationTestsHelper
                     "PushUps",
                     "Do 20 push ups",
                     new Category("Sport", "Something involved exercising"),
+                    DateTime.UtcNow,
                     DateTime.UtcNow.AddDays(7),
                     TaskAndSubtaskStatus.New,
                     new List<Subtask>()

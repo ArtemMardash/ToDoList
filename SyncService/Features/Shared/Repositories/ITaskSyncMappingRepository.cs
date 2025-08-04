@@ -12,12 +12,12 @@ public interface ITaskSyncMappingRepository
     /// <summary>
     /// Method to delete task sync mapping
     /// </summary>
-    public Task DeleteTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken);
+    public Task DeleteTaskSyncMappingByTaskIdAsync(Guid taskId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Method to get task sync mapping
     /// </summary>
-    public Task<TaskSyncMapping> GetTaskSyncMappingAsync(Guid id, CancellationToken cancellationToken);
+    public Task<TaskSyncMapping> GetTaskSyncMappingAsyncByTaskId(Guid taskId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Method to ger task sync mapping by calendar Id

@@ -12,6 +12,8 @@ public class SyncDbContext: DbContext
     
     public DbSet<UserSyncStateDb> UsersSyncState { get; set; }
     
+    public DbSet<TgLinksDb> TgLinks { get; set; }
+    
     public SyncDbContext(DbContextOptions options): base(options)
     {
         //Database.EnsureCreated();
@@ -21,6 +23,7 @@ public class SyncDbContext: DbContext
     {
         modelBuilder.Entity<TaskSyncMappingDb>().HasKey(t => t.Id);
         modelBuilder.Entity<UserSyncStateDb>().HasKey(u => u.Id);
+        modelBuilder.Entity<TgLinksDb>().HasKey(tg => tg.Id);
     } 
 }
 

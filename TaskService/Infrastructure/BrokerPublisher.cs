@@ -23,7 +23,8 @@ public class BrokerPublisher : IBrokerPublisher
                 UserId = task.UserId,
                 Name = task.Name,
                 Description = task.Description,
-                Deadline = task.Deadline
+                Deadline = task.Deadline,
+                Start = task.Start
             }
             , cancellationToken);
         Console.WriteLine($"Published {nameof(ITaskCreated)}");
@@ -37,7 +38,8 @@ public class BrokerPublisher : IBrokerPublisher
                 UserId = task.UserId,
                 Name = task.Name,
                 Description = task.Description,
-                Deadline = task.Deadline
+                Deadline = task.Deadline,
+                Start = task.Start
             }
             , cancellationToken);
         Console.WriteLine($"Published {nameof(ITaskUpdated)}");

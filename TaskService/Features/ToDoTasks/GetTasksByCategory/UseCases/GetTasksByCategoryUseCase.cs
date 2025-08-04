@@ -38,6 +38,7 @@ public class GetTasksByCategoryUseCase : IRequestHandler<GetTasksByCategoryReque
             Name = task.Name,
             Description = task.Description,
             Category = ToCategoryResult(task.Category),
+            Start = task.Start,
             Deadline = task.Deadline,
             TaskStatus = task.TaskStatus,
             SubTasks = task.SubTasks.Select(ToSubTaskResult).ToList()

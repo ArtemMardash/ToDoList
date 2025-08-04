@@ -34,6 +34,7 @@ public class TaskRepository : ITaskRepository
             Name = task.Name,
             Description = task.Description,
             Deadline = task.Deadline,
+            Start = task.Start
         };
         taskDb.DomainEvents.Add(taskCreated);
         
@@ -104,6 +105,7 @@ public class TaskRepository : ITaskRepository
         
         taskDb.TaskStatus = (int)task.TaskStatus;
         taskDb.Description = task.Description;
+        taskDb.Start = task.Start;
         taskDb.Deadline = task.Deadline;
         taskDb.Category = categoryDb ?? new CategoryDb
         {
@@ -120,6 +122,7 @@ public class TaskRepository : ITaskRepository
             Name = taskDb.Name,
             Description = taskDb.Description,
             Deadline = taskDb.Deadline,
+            Start = taskDb.Start
         };
         
         taskDb.DomainEvents.Add(taskUpdated);

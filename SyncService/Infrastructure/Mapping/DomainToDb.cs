@@ -27,4 +27,15 @@ public static class DomainToDb
             TokenExpiry = userSyncState.TokenExpiry
         };
     }
+
+    public static TgLinksDb ToDb(this TgLinks tgLinks)
+    {
+        return new TgLinksDb
+        {
+            Id = tgLinks.Id,
+            UserId = tgLinks.UserId,
+            TgUserId = tgLinks.TgUserId,
+            UniqueCode = tgLinks.UniqueCode
+        };
+    }
 }

@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITaskSyncMappingRepository, TaskSyncMappingRepository>();
         services.AddScoped<IUserSyncStateRepository, UserSyncStateRepository>();
+        services.AddScoped<ITgLinksRepository, TgLinksRepository>();
         services.AddScoped<GoogleCalendarService>();
         services.AddRefitClient<ITaskServiceApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:5232"));

@@ -26,16 +26,16 @@ public class TaskCreatedUseCase: ITaskCreatedUseCase
     {
         try
         {
-            var taskSyncMapping = await _taskSyncMappingRepository.GetTaskSyncMappingAsync(taskCreated.Id, cancellationToken);
+            var taskSyncMapping = await _taskSyncMappingRepository.GetTaskSyncMappingAsyncByTaskId(taskCreated.Id, cancellationToken);
             Console.WriteLine("Task with such Id already exists, event ignored");
         }
         catch (InvalidOperationException ex)
         {
             var taskSyncMapping = new TaskSyncMapping(taskCreated.Id, "");
-            await _googleCalendarService.InsertOrUpdateEventAsync(taskSyncMapping, taskCreated.UserId, cancellationToken);
-            Console.WriteLine("Created Task Sync Mapping");
             await _taskSyncMappingRepository.AddTaskSyncMappingAsync(taskSyncMapping, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _googleCalendarService.InsertOrUpdateEventAsync(taskSyncMapping, taskCreated, cancellationToken);
+            Console.WriteLine("Created Task Sync Mapping");
         }
     }
 }

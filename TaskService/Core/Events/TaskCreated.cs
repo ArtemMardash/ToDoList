@@ -31,4 +31,9 @@ public class TaskCreated: INotification
     /// </summary>
     public DateTime Deadline { get; set; }
     
+    /// <summary>
+    /// Start of the task
+    /// </summary>
+    public DateTime Start { get; set; }
+    
 }

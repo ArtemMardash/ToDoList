@@ -23,8 +23,8 @@ public class TaskUpdatedUseCase: ITaskUpdatedUseCase
     
     public async Task ExecuteAsync(ITaskUpdated taskUpdated, CancellationToken cancellationToken)
     {
-        var taskToUpdate = await _taskSyncMappingRepository.GetTaskSyncMappingAsync(taskUpdated.Id, cancellationToken);
-        await _googleCalendarService.InsertOrUpdateEventAsync(taskToUpdate, taskUpdated.UserId, cancellationToken);
+        var taskToUpdate = await _taskSyncMappingRepository.GetTaskSyncMappingAsyncByTaskId(taskUpdated.Id, cancellationToken);
+        await _googleCalendarService.InsertOrUpdateEventAsync(taskToUpdate, taskUpdated, cancellationToken);
         Console.WriteLine("The task should be updated");
     }
 }

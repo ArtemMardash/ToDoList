@@ -26,6 +26,7 @@ public class GetTaskByIdUseCase : IRequestHandler<GetTaskByIdRequest, TaskDtoRes
             Name = result.Name,
             Description = result.Description,
             Category = ToCategoryResult(result.Category),
+            Start = result.Start,
             Deadline = result.Deadline,
             TaskStatus = result.TaskStatus,
             SubTasks = result.SubTasks.Select(ToSubTaskResult).ToList()
