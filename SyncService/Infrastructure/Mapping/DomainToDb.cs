@@ -38,4 +38,16 @@ public static class DomainToDb
             UniqueCode = tgLinks.UniqueCode
         };
     }
+
+    public static NotificationDb ToDb(this Notification notification)
+    {
+        return new NotificationDb
+        {
+            Id = notification.Id,
+            TaskId = notification.TaskId,
+            UserId = notification.UserId,
+            NotificationType = (int)notification.NotificationType,
+            IsDelivered = notification.IsDelivered
+        };
+    }
 }

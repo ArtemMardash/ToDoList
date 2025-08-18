@@ -14,12 +14,14 @@ public class TaskCreatedUseCase: ITaskCreatedUseCase
     private readonly ITaskSyncMappingRepository _taskSyncMappingRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly GoogleCalendarService _googleCalendarService;
+    private readonly INotificationRepository _notificationRepository;
 
-    public TaskCreatedUseCase(ITaskSyncMappingRepository taskSyncMappingRepository, IUnitOfWork unitOfWork, GoogleCalendarService googleCalendarService)
+    public TaskCreatedUseCase(ITaskSyncMappingRepository taskSyncMappingRepository, IUnitOfWork unitOfWork, GoogleCalendarService googleCalendarService, INotificationRepository notificationRepository)
     {
         _taskSyncMappingRepository = taskSyncMappingRepository;
         _unitOfWork = unitOfWork;
         _googleCalendarService = googleCalendarService;
+        _notificationRepository = notificationRepository;
     }
 
     public async Task ExecuteAsync(ITaskCreated taskCreated, CancellationToken cancellationToken)
@@ -33,9 +35,12 @@ public class TaskCreatedUseCase: ITaskCreatedUseCase
         {
             var taskSyncMapping = new TaskSyncMapping(taskCreated.Id, "");
             await _taskSyncMappingRepository.AddTaskSyncMappingAsync(taskSyncMapping, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
             await _googleCalendarService.InsertOrUpdateEventAsync(taskSyncMapping, taskCreated, cancellationToken);
             Console.WriteLine("Created Task Sync Mapping");
+            await _notificationRepository.CreateNotificationAsync(
+                new Notification(taskCreated.Id, taskCreated.UserId, NotificationType.Added, false),
+                cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

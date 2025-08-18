@@ -29,4 +29,14 @@ public static class DbToDomain
             tgLinksDb.TgUserId,
             tgLinksDb.UniqueCode);
     }
+
+    public static Notification ToDomain(this NotificationDb notificationDb)
+    {
+        return new Notification(
+            notificationDb.Id,
+            notificationDb.TaskId,
+            notificationDb.UserId,
+            (NotificationType)notificationDb.NotificationType,
+            notificationDb.IsDelivered);
+    }
 }

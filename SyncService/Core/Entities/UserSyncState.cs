@@ -37,9 +37,7 @@ public class UserSyncState
             ? throw new ArgumentException("token can not be empty", nameof(googleAccessToken))
             : googleAccessToken;
         GoogleRefreshToken = googleRefreshToken;
-        TokenExpiry = tokenExpiry > DateTime.UtcNow
-            ? tokenExpiry
-            : throw new ArgumentException("token expiry should be extended", nameof(tokenExpiry));
+        TokenExpiry = tokenExpiry;
         GoogleId = googleId;
     }
 

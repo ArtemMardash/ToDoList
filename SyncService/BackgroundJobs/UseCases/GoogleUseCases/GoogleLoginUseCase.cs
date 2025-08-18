@@ -12,12 +12,20 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
     private readonly IUserSyncStateRepository _userSyncStateRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGoogleRegisterUseCase _googleRegistredUseCase;
+    private readonly IGenerateUniqueCodeUseCase _generateUniqueCodeUseCase;
+    private readonly ITgLinksRepository _tgLinksRepository;
 
-    public GoogleLoginUseCase(IUserSyncStateRepository userSyncStateRepository, IUnitOfWork unitOfWork, IGoogleRegisterUseCase googleRegistredUseCase)
-    { 
+    public GoogleLoginUseCase(IUserSyncStateRepository userSyncStateRepository,
+        IUnitOfWork unitOfWork,
+        IGoogleRegisterUseCase googleRegistredUseCase,
+        IGenerateUniqueCodeUseCase generateUniqueCodeUseCase,
+        ITgLinksRepository tgLinksRepository)
+    {
         _userSyncStateRepository = userSyncStateRepository;
         _unitOfWork = unitOfWork;
         _googleRegistredUseCase = googleRegistredUseCase;
+        _generateUniqueCodeUseCase = generateUniqueCodeUseCase;
+        _tgLinksRepository = tgLinksRepository;
     }
 
     public async Task ExecuteAsync(IGoogleLogin googleLogin, CancellationToken cancellationToken)
@@ -47,5 +55,7 @@ public class GoogleLoginUseCase : IGoogleLoginUseCase
             };
             await _googleRegistredUseCase.ExecuteAsync(dto, cancellationToken);
         }
+
+        await _generateUniqueCodeUseCase.ExecuteAsync(googleLogin.UserId, cancellationToken);
     }
 }

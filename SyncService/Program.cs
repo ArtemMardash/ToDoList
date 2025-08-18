@@ -65,22 +65,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapPost("/generate-unigue-code/{userId:guid}", async (Guid userId, ITgLinksRepository tgLinksRepository, IUnitOfWork unitOfWork, CancellationToken cancellationToken) =>
-    {
-        var tgLink = await tgLinksRepository.GetTgLinkByUserIdAsync(userId, cancellationToken);
-
-        var code = new Random().Next(000000, 999999);
-        tgLink.UniqueCode = code;
-        await tgLinksRepository.UpdateAsync(tgLink, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-    })
-    .WithName("GenerateCode")
-    .WithOpenApi();
-
 app.Run();
 

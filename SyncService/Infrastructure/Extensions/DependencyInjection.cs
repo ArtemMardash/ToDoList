@@ -5,7 +5,9 @@ using Refit;
 using SyncService.BackgroundJobs.Interfaces;
 using SyncService.BackgroundJobs.UseCases;
 using SyncService.BackgroundJobs.UseCases.GoogleUseCases;
+using SyncService.BackgroundJobs.UseCases.NotificationUseCases;
 using SyncService.BackgroundJobs.UseCases.TaskUseCases;
+using SyncService.BackgroundJobs.UseCases.TgUseCases;
 using SyncService.Core.Entities;
 using SyncService.Features.Shared.Interfaces;
 using SyncService.Features.Shared.Repositories;
@@ -26,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<ITaskSyncMappingRepository, TaskSyncMappingRepository>();
         services.AddScoped<IUserSyncStateRepository, UserSyncStateRepository>();
         services.AddScoped<ITgLinksRepository, TgLinksRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<GoogleCalendarService>();
         services.AddRefitClient<ITaskServiceApi>()
             .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:5232"));
@@ -45,6 +48,9 @@ public static class DependencyInjection
         services.AddScoped<ITaskCreatedUseCase, TaskCreatedUseCase>();
         services.AddScoped<ITaskDeletedUseCase, TaskDeletedUseCase>();
         services.AddScoped<ITaskUpdatedUseCase, TaskUpdatedUseCase>();
+        services.AddScoped<IAddNotificationUseCase, AddNotificationUseCase>();
+        services.AddScoped<IGenerateUniqueCodeUseCase, GenerateUniqueCodeUseCase>();
+        services.AddScoped<IGetUndeliveredNotificationsUseCase, GetUndeliveredNotificationsUseCase>();
         return services;
     }
 
